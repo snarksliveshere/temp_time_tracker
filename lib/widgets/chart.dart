@@ -10,23 +10,20 @@ class Chart extends StatelessWidget {
   Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactionValues {
+    print(recentTransactions.toString());
     return List.generate(7, (index) {
-      final weekDay = DateTime.now().subtract(
+      final DateTime weekDay = DateTime.now().subtract(
         Duration(days: index),
       );
-      var totalSum = 0.0;
-
-      for (var i = 0; i < recentTransactions.length; i++) {
-        if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year) {
-          totalSum += recentTransactions[i].amount;
-        }
+      double amount = 0.0;
+      if (recentTransactions.length >= index + 1) {
+        amount = recentTransactions[index].amount;
       }
 
       return {
-        'day': DateFormat.E().format(weekDay).substring(0, 1),
-        'amount': totalSum,
+        'dateDM': DateFormat.Md().format(weekDay),
+        'dayOfWeek': DateFormat.E().format(weekDay).substring(0, 1),
+        'amount': amount,
       };
     }).reversed.toList();
   }
@@ -39,6 +36,7 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(groupedTransactionValues.toString());
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
@@ -50,11 +48,13 @@ class Chart extends StatelessWidget {
             return Flexible(
               fit: FlexFit.tight,
               child: ChartBar(
-                data['day'],
+                data['dateDM'],
+                data['dayOfWeek'],
                 data['amount'],
-                totalSpending == 0.0
-                    ? 0.0
-                    : (data['amount'] as double) / totalSpending,
+                0.8
+//                totalSpending == 0.0 || totalSpending > 24
+//                    ? 0.0
+//                    : (data['amount'] as double) / 24,
               ),
             );
           }).toList(),
