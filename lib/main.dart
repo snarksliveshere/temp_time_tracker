@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Personal Expenses',
+      title: 'Temp Time Tracker',
       theme: ThemeData(
           primarySwatch: Colors.purple,
           accentColor: Colors.amber,
@@ -183,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
       middle: Text(
-        'Personal Expenses',
+        'Temp Time Tracker',
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
