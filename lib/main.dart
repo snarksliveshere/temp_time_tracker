@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Temp Time Tracker',
       theme: ThemeData(
           primarySwatch: Colors.blue,
-          accentColor: Colors.blueGrey,
+          accentColor: Colors.greenAccent,
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
           textTheme: ThemeData
