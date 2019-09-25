@@ -10,33 +10,40 @@ class Chart extends StatelessWidget {
   Chart(this.recentTransactions);
 
   List<Map<String, Object>> get groupedTransactionValues {
-    print(recentTransactions.toString());
-    return List.generate(7, (index) {
+    var a = List.generate(7, (index) {
       final DateTime weekDay = DateTime.now().subtract(
         Duration(days: index),
       );
-      double amount = 0.0;
-      if (recentTransactions.length >= index + 1) {
-        amount = recentTransactions[index].amount;
+      double totalSum = 0.0;
+
+      for (var i = 0; i < recentTransactions.length; i++) {
+        if (recentTransactions[i].date.day == weekDay.day &&
+            recentTransactions[i].date.month == weekDay.month &&
+            recentTransactions[i].date.year == weekDay.year) {
+          totalSum += recentTransactions[i].amount;
+        }
       }
 
       return {
         'dateDM': DateFormat.Md().format(weekDay),
         'dayOfWeek': DateFormat.E().format(weekDay).substring(0, 1),
-        'amount': amount,
+        'amount': totalSum,
       };
     }).reversed.toList();
+    print(a.toString());
+    return a;
   }
 
-  double get totalSpending {
-    return groupedTransactionValues.fold(0.0, (sum, item) {
-      return sum + item['amount'];
-    });
+  double _getFraction(double amount) {
+    double res = amount / 24;
+    if (res > 1) {
+      return 1;
+    }
+    return res;
   }
 
   @override
   Widget build(BuildContext context) {
-    print(groupedTransactionValues.toString());
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
@@ -50,11 +57,8 @@ class Chart extends StatelessWidget {
               child: ChartBar(
                 data['dateDM'],
                 data['dayOfWeek'],
-                data['amount'],
-                0.8
-//                totalSpending == 0.0 || totalSpending > 24
-//                    ? 0.0
-//                    : (data['amount'] as double) / 24,
+                data['amount'] as double > 24 ? 24 : data['amount'],
+                _getFraction(data['amount'])
               ),
             );
           }).toList(),

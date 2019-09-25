@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Temp Time Tracker',
       theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.amber,
+          primarySwatch: Colors.blue,
+          accentColor: Colors.blueGrey,
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
           textTheme: ThemeData
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
     )
         : AppBar(
       title: Text(
-        'Personal Expenses',
+        'Temp Time Tracker',
       ),
       actions: <Widget>[
         IconButton(
