@@ -3,21 +3,33 @@ import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 
 class Transaction {
-  final String id;
-  final String title;
-  final double amount;
-  final DateTime date;
+  String id;
+  String title;
+  double amount;
+  DateTime date;
+  bool flagDivider;
 
   Transaction({
     @required this.id,
     @required this.title,
     @required this.amount,
     @required this.date,
+    @required this.flagDivider,
   });
 
-//  String get dateFormatDM {
-//    return DateFormat.yMd().format(this.date);
-//  }
+
+  Transaction.headerDivider({
+    @required this.date,
+    @required this.flagDivider
+  });
+
+  String get dateFormatDM {
+    return DateFormat.yMd().format(this.date);
+  }
+
+  String getDateFormatDM(DateTime date) {
+    return DateFormat.yMd().format(date);
+  }
 
   String dateFormatDayOfWeek(weekday) {
     return DateFormat.yMd().format(weekday).substring(0, 1);

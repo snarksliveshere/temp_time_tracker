@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,30 +28,24 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.deepOrange,
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
-          textTheme: ThemeData
-              .light()
-              .textTheme
-              .copyWith(
-            title: TextStyle(
-              fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-            button: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          appBarTheme: AppBarTheme(
-            textTheme: ThemeData
-                .light()
-                .textTheme
-                .copyWith(
-              title: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                button: TextStyle(
+                  color: Colors.white,
+                ),
               ),
-            ),
+          appBarTheme: AppBarTheme(
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  title: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
           )),
       home: MyHomePage(),
     );
@@ -92,16 +87,33 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount,
-      DateTime chosenDate) {
-    final newTx = Transaction(
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
+
+    List<Transaction> compare = _userTransactions.where((tx) {
+      return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM && tx.flagDivider;
+    }).toList();
+
+    print(compare.toString());
+    print(compare.isNotEmpty);
+
+    var rand = Random();
+    final Transaction headerDivider = Transaction.headerDivider(
+      date: chosenDate,
+      flagDivider: true,
+    );
+    final Transaction newTx = Transaction(
       title: txTitle,
       amount: txAmount,
       date: chosenDate,
-      id: DateTime.now().toString(),
+      id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
+      flagDivider: false,
     );
 
     setState(() {
+      if (compare.isEmpty) {
+        _userTransactions.add(headerDivider);
+      }
       _userTransactions.add(newTx);
     });
   }
@@ -125,49 +137,45 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> _buildLandscapeContent(MediaQueryData mediaQuery, AppBar appBar,
-      Widget txListWidget) {
-    return [Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
-          'Show Chart',
-          style: Theme
-              .of(context)
-              .textTheme
-              .title,
-        ),
-        Switch.adaptive(
-          activeColor: Theme
-              .of(context)
-              .accentColor,
-          value: _showChart,
-          onChanged: (val) {
-            setState(() {
-              _showChart = val;
-            });
-          },
-        )
-      ],
-    ),
+  List<Widget> _buildLandscapeContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Show Chart',
+            style: Theme.of(context).textTheme.title,
+          ),
+          Switch.adaptive(
+            activeColor: Theme.of(context).accentColor,
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          )
+        ],
+      ),
       _showChart
           ? Container(
-          height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
-              mediaQuery.padding.top) *
-              0.7,
-          child: Chart(_recentTransactions))
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions))
           : txListWidget
     ];
   }
 
-  List<Widget> _buildPortraitContent(MediaQueryData mediaQuery, AppBar appBar,
-      Widget txListWidget) {
+  List<Widget> _buildPortraitContent(
+      MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
     return [
       Container(
         height: (mediaQuery.size.height -
-            appBar.preferredSize.height -
-            mediaQuery.padding.top) *
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
             0.3,
         child: Chart(_recentTransactions),
       ),
@@ -182,35 +190,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-      middle: Text(
-        'Temp Time Tracker',
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => _startAddNewTransaction(context),
-            child: Icon(CupertinoIcons.add),
-          ),
-        ],
-      ),
-    )
+            middle: Text(
+              'Temp Time Tracker',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => _startAddNewTransaction(context),
+                  child: Icon(CupertinoIcons.add),
+                ),
+              ],
+            ),
+          )
         : AppBar(
-      title: Text(
-        'Temp Time Tracker',
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        ),
-      ],
-    );
+            title: Text(
+              'Temp Time Tracker',
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              ),
+            ],
+          );
 
     final Widget txListWidget = Container(
         height: (mediaQuery.size.height -
-            appBar.preferredSize.height -
-            mediaQuery.padding.top) *
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions, _deleteTransaction));
 
@@ -230,20 +238,20 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
-      child: pageBody,
-      navigationBar: appBar,
-    )
+            child: pageBody,
+            navigationBar: appBar,
+          )
         : Scaffold(
-      appBar: appBar,
-      body: pageBody,
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
-    );
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _startAddNewTransaction(context),
+                  ),
+          );
   }
 }
