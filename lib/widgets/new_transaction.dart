@@ -51,7 +51,7 @@ class _NewTransactionState extends State<NewTransaction> {
         return;
       }
       setState(() {
-        _selectedDate = val;
+        _selectedDate = DateTime(val.year,val.month, val.day);
       });
     });
   }

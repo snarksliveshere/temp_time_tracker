@@ -78,10 +78,20 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
+    _userTransactions.sort((a,b) {
+      if (a.flagDivider || b.flagDivider) {
+        a.date.add(Duration(seconds: 1));
+        b.date.add(Duration(seconds: 1));
+      }
+      print(a.flagDivider);
+      print(a.date.toString());
+      return b.date.millisecondsSinceEpoch - a.date.millisecondsSinceEpoch;
+    });
+    return _userTransactions;
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
-          Duration(days: 7),
+          Duration(days: 30),
         ),
       );
     }).toList();
