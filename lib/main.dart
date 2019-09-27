@@ -53,27 +53,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  // String titleInput;
-  // String amountInput;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //   id: 't1',
-    //   title: 'New Shoes',
-    //   amount: 69.99,
-    //   date: DateTime.now(),
-    // ),
-    // Transaction(
-    //   id: 't2',
-    //   title: 'Weekly Groceries',
-    //   amount: 16.53,
-    //   date: DateTime.now(),
-    // ),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   bool _showChart = false;
 
@@ -83,18 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
         a.date.add(Duration(seconds: 1));
         b.date.add(Duration(seconds: 1));
       }
-      print(a.flagDivider);
-      print(a.date.toString());
       return b.date.millisecondsSinceEpoch - a.date.millisecondsSinceEpoch;
     });
     return _userTransactions;
-    return _userTransactions.where((tx) {
-      return tx.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 30),
-        ),
-      );
-    }).toList();
   }
 
   void _addNewTransaction(
