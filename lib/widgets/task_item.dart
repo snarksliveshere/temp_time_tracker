@@ -95,7 +95,8 @@ class TaskItem extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(Icons.delete),
                       color: Theme.of(context).errorColor,
-                      onPressed: () => this.deleteTx(task.id),
+//                      onPressed: () => this.deleteTx(task.id),
+                      onPressed: () => _showDeleteDialog(context),
                     ),
                   ),
                 ],
@@ -104,39 +105,38 @@ class TaskItem extends StatelessWidget {
           );
   }
 
-  Widget getListTile(context) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: task.color,
-        radius: 30.0,
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: FittedBox(
-            child: Text(
-              '${task.amount.toStringAsFixed(2)} H',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+  void _showDeleteDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Task"),
+          content: Text("Are you sure you want to delete\n`${task.title}`?"),
+          actions: <Widget>[
+            FlatButton(
+              child: new Text(
+                "CANCEL",
+                style: TextStyle(color: Theme.of(context).primaryColor),
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-          ),
-        ),
-      ),
-      title: Text(
-        task.title,
-        style: Theme.of(context).textTheme.title,
-      ),
-      subtitle: Text(
-        DateFormat.yMMMd().format(task.date),
-      ),
-      trailing: Column(
-        children: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.delete),
-            color: Theme.of(context).errorColor,
-            onPressed: () => this.deleteTx(task.id),
-          ),
-        ],
-      ),
+            FlatButton(
+              child: new Text(
+                "DELETE",
+                style: TextStyle(
+                  color: Theme.of(context).errorColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                this.deleteTx(task.id);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

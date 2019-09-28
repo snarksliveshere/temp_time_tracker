@@ -217,11 +217,17 @@ class _NewTaskState extends State<NewTask> {
           content: content,
           actions: [
             FlatButton(
-              child: Text('CANCEL'),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
               onPressed: Navigator.of(context).pop,
             ),
             FlatButton(
-              child: Text('SUBMIT'),
+              child: Text(
+                'SUBMIT',
+                style: TextStyle(color: Colors.green),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() => _mainColor = _tempMainColor);
