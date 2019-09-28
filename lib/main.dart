@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addNewTransaction(
-      String txTitle, double txAmount, DateTime chosenDate) {
+      String txTitle, String txDescription, double txAmount, DateTime chosenDate) {
 
     List<Transaction> compare = _userTransactions.where((tx) {
       return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM && tx.flagDivider;
@@ -90,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     final Transaction newTx = Transaction(
       title: txTitle,
+      description: txDescription,
       amount: txAmount,
       date: chosenDate,
       id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',

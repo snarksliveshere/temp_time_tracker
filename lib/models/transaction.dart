@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 class Transaction {
   String id;
   String title;
+  String description;
   double amount;
   DateTime date;
   bool flagDivider;
@@ -12,6 +13,7 @@ class Transaction {
   Transaction({
     @required this.id,
     @required this.title,
+    this.description,
     @required this.amount,
     @required this.date,
     @required this.flagDivider,
