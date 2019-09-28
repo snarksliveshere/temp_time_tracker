@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 //import 'package:flutter/services.dart'; // SystemChrome
 
-import './widgets/new_transaction.dart';
-import './widgets/transaction_list.dart';
+import './widgets/new_task.dart';
+import './widgets/task_list.dart';
 import './widgets/chart.dart';
-import './models/transaction.dart';
+import './models/task.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,23 +29,23 @@ class MyApp extends StatelessWidget {
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                button: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+            title: TextStyle(
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            button: TextStyle(
+              color: Colors.white,
+            ),
+          ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
-                    fontFamily: 'OpenSans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              title: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           )),
       home: MyHomePage(),
     );
@@ -58,37 +58,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [];
+  final List<Task> _userTasks = [];
 
   bool _showChart = false;
 
-  List<Transaction> get _recentTransactions {
-    _userTransactions.sort((a,b) {
+  List<Task> get _recentTasks {
+    _userTasks.sort((a,b) {
       if (a.flagDivider || b.flagDivider) {
         a.date.add(Duration(seconds: 1));
         b.date.add(Duration(seconds: 1));
       }
       return b.date.millisecondsSinceEpoch - a.date.millisecondsSinceEpoch;
     });
-    return _userTransactions;
+    return _userTasks;
   }
 
-  void _addNewTransaction(
+  void _addNewTask(
       String txTitle, String txDescription, double txAmount, DateTime chosenDate) {
 
-    List<Transaction> compare = _userTransactions.where((tx) {
+    List<Task> compare = _userTasks.where((tx) {
       return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM && tx.flagDivider;
     }).toList();
 
-    print(compare.toString());
-    print(compare.isNotEmpty);
-
     var rand = Random();
-    final Transaction headerDivider = Transaction.headerDivider(
+    final Task headerDivider = Task.headerDivider(
       date: chosenDate,
       flagDivider: true,
     );
-    final Transaction newTx = Transaction(
+    final Task newTx = Task(
       title: txTitle,
       description: txDescription,
       amount: txAmount,
@@ -99,24 +96,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       if (compare.isEmpty) {
-        _userTransactions.add(headerDivider);
+        _userTasks.add(headerDivider);
       }
-      _userTransactions.add(newTx);
+      _userTasks.add(newTx);
     });
   }
 
-  void _deleteTransaction(String id) {
+  void _deleteTask(String id) {
     setState(() {
-      _userTransactions.removeWhere((el) => el.id == id);
+      _userTasks.removeWhere((el) => el.id == id);
     });
   }
 
-  void _startAddNewTransaction(BuildContext ctx) {
+  void _startAddNewTask(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       isScrollControlled: true,
       builder: (_) {
-        return NewTransaction(_addNewTransaction);
+        return NewTask(_addNewTask);
       },
     );
   }
@@ -144,11 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       _showChart
           ? Container(
-              height: (mediaQuery.size.height -
-                      appBar.preferredSize.height -
-                      mediaQuery.padding.top) *
-                  0.7,
-              child: Chart(_recentTransactions))
+          height: (mediaQuery.size.height -
+              appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+              0.7,
+          child: Chart(_recentTasks))
           : txListWidget
     ];
   }
@@ -158,10 +155,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       Container(
         height: (mediaQuery.size.height -
-                appBar.preferredSize.height -
-                mediaQuery.padding.top) *
+            appBar.preferredSize.height -
+            mediaQuery.padding.top) *
             0.3,
-        child: Chart(_recentTransactions),
+        child: Chart(_recentTasks),
       ),
       txListWidget
     ];
@@ -174,37 +171,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text(
-              'Temp Time Tracker',
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => _startAddNewTransaction(context),
-                  child: Icon(CupertinoIcons.add),
-                ),
-              ],
-            ),
-          )
+      middle: Text(
+        'Temp Time Tracker',
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => _startAddNewTask(context),
+            child: Icon(CupertinoIcons.add),
+          ),
+        ],
+      ),
+    )
         : AppBar(
-            title: Text(
-              'Temp Time Tracker',
-            ),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startAddNewTransaction(context),
-              ),
-            ],
-          );
+      title: Text(
+        'Temp Time Tracker',
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTask(context),
+        ),
+      ],
+    );
 
     final Widget txListWidget = Container(
         height: (mediaQuery.size.height -
-                appBar.preferredSize.height -
-                mediaQuery.padding.top) *
+            appBar.preferredSize.height -
+            mediaQuery.padding.top) *
             0.7,
-        child: TransactionList(_userTransactions, _deleteTransaction));
+        child: TaskList(_userTasks, _deleteTask));
 
     var pageBody = SafeArea(
       child: SingleChildScrollView(
@@ -222,20 +219,20 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
-            child: pageBody,
-            navigationBar: appBar,
-          )
+      child: pageBody,
+      navigationBar: appBar,
+    )
         : Scaffold(
-            appBar: appBar,
-            body: pageBody,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: Platform.isIOS
-                ? Container()
-                : FloatingActionButton(
-                    child: Icon(Icons.add),
-                    onPressed: () => _startAddNewTransaction(context),
-                  ),
-          );
+      appBar: appBar,
+      body: pageBody,
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddNewTask(context),
+      ),
+    );
   }
 }

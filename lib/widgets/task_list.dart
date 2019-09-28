@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/transaction.dart';
-import './transaction_item.dart';
+import '../models/task.dart';
+import './task_item.dart';
 
-class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
+class TaskList extends StatelessWidget {
+  final List<Task> tasks;
   final Function deleteTx;
 
-  TransactionList(this.transactions, this.deleteTx);
+  TaskList(this.tasks, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: transactions.isEmpty
+      child: tasks.isEmpty
           ? LayoutBuilder(
               builder: (ctx, constraint) {
                 return Column(
                   children: <Widget>[
                     Text(
-                      'No transactions added yet!',
+                      'No tasks added yet!',
                       style: Theme.of(context).textTheme.title,
                     ),
                     const SizedBox(
@@ -37,9 +37,9 @@ class TransactionList extends StatelessWidget {
             )
           : ListView.builder(
               itemBuilder: (context, index) {
-                return TransactionItem(transaction: transactions[index], deleteTx: deleteTx);
+                return TaskItem(task: tasks[index], deleteTx: deleteTx);
               },
-              itemCount: transactions.length,
+              itemCount: tasks.length,
             ),
     );
   }
@@ -61,7 +61,7 @@ class TransactionList extends StatelessWidget {
             ),
             padding: const EdgeInsets.all(10),
             child: Text(
-              '\$${transactions[index].amount.toStringAsFixed(2)}',
+              '\$${tasks[index].amount.toStringAsFixed(2)}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -73,11 +73,11 @@ class TransactionList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                transactions[index].title,
+                tasks[index].title,
                 style: Theme.of(context).textTheme.title,
               ),
               Text(
-                DateFormat.yMMMd().format(transactions[index].date),
+                DateFormat.yMMMd().format(tasks[index].date),
                 style: TextStyle(
                   color: Colors.grey,
                 ),

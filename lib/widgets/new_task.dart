@@ -1,21 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import './adaptive_flat_button.dart';
 
-class NewTransaction extends StatefulWidget {
+class NewTask extends StatefulWidget {
   final Function addTx;
 
-  NewTransaction(this.addTx);
+  NewTask(this.addTx);
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTaskState createState() => _NewTaskState();
 }
 
-class _NewTransactionState extends State<NewTransaction> {
+class _NewTaskState extends State<NewTask> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -54,7 +53,7 @@ class _NewTransactionState extends State<NewTransaction> {
         return;
       }
       setState(() {
-        _selectedDate = DateTime(val.year,val.month, val.day);
+        _selectedDate = DateTime(val.year, val.month, val.day);
       });
     });
   }
@@ -76,7 +75,7 @@ class _NewTransactionState extends State<NewTransaction> {
         VerticalDivider(),
         Flexible(
           flex: 2,
-          child:   TextField(
+          child: TextField(
             decoration: InputDecoration(labelText: 'Amount'),
             controller: _amountController,
             keyboardType: TextInputType.number,
@@ -125,10 +124,8 @@ class _NewTransactionState extends State<NewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              if(isLandscape)
-                getLandscapeMode(),
-              if(!isLandscape)
-                ...getPortraitMode(),
+              if (isLandscape) getLandscapeMode(),
+              if (!isLandscape) ...getPortraitMode(),
               TextField(
                 decoration: InputDecoration(labelText: 'Description'),
                 controller: _descriptionController,
@@ -141,18 +138,42 @@ class _NewTransactionState extends State<NewTransaction> {
                 height: 70.0,
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      child: Text(_selectedDate == null
-                          ? 'No Date Chosen'
-                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}'),
+                    Flexible(
+                      flex: 3,
+                      child:
+                          AdaptiveFlatButton('Choose date', _presentDatePicker),
                     ),
-                    AdaptiveFlatButton('Choose date', _presentDatePicker),
+                    Flexible(
+                      flex: 3,
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No Date Chosen'
+                            : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    VerticalDivider(
+                      width: 20.0,
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Container(
+                        color: _mainColor,
+                        child: AdaptiveFlatButton.colorText(
+                          'Choose color',
+                          _openMainColorPicker,
+                          Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
               RaisedButton(
                 color: Theme.of(context).primaryColorDark,
-                child: Text('Add Transaction'),
+                child: Text('Add Task'),
                 textColor: Theme.of(context).textTheme.button.color,
                 onPressed: _submitData,
               ),
@@ -162,4 +183,47 @@ class _NewTransactionState extends State<NewTransaction> {
       ),
     );
   }
+
+  void _openDialog(String title, Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(6.0),
+          title: Text(title),
+          content: content,
+          actions: [
+            FlatButton(
+              child: Text('CANCEL'),
+              onPressed: Navigator.of(context).pop,
+            ),
+            FlatButton(
+              child: Text('SUBMIT'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() => _mainColor = _tempMainColor);
+                setState(() => _shadeColor = _tempShadeColor);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openMainColorPicker() async {
+    _openDialog(
+      "Main Color picker",
+      MaterialColorPicker(
+        selectedColor: _mainColor,
+        allowShades: false,
+        onMainColorChange: (color) => setState(() => _tempMainColor = color),
+      ),
+    );
+  }
+
+  ColorSwatch _tempMainColor;
+  Color _tempShadeColor;
+  ColorSwatch _mainColor = Colors.blue;
+  Color _shadeColor = Colors.blue[800];
 }

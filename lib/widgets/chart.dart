@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import './chart_bar.dart';
-import '../models/transaction.dart';
+import '../models/task.dart';
 
 class Chart extends StatelessWidget {
-  final List<Transaction> recentTransactions;
+  final List<Task> recentTasks;
 
-  Chart(this.recentTransactions);
+  Chart(this.recentTasks);
 
-  List<Map<String, Object>> get groupedTransactionValues {
+  List<Map<String, Object>> get groupedTaskValues {
     return List.generate(7, (index) {
       final DateTime weekDay = DateTime.now().subtract(
         Duration(days: index),
       );
       double totalSum = 0.0;
 
-      for (var i = 0; i < recentTransactions.length; i++) {
-        if (recentTransactions[i].date.day == weekDay.day &&
-            recentTransactions[i].date.month == weekDay.month &&
-            recentTransactions[i].date.year == weekDay.year &&
-            !recentTransactions[i].flagDivider
+      for (var i = 0; i < recentTasks.length; i++) {
+        if (recentTasks[i].date.day == weekDay.day &&
+            recentTasks[i].date.month == weekDay.month &&
+            recentTasks[i].date.year == weekDay.year &&
+            !recentTasks[i].flagDivider
         ) {
-          totalSum += recentTransactions[i].amount;
+          totalSum += recentTasks[i].amount;
         }
       }
 
@@ -51,7 +51,7 @@ class Chart extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionValues.map((data) {
+          children: groupedTaskValues.map((data) {
             return Flexible(
               fit: FlexFit.tight,
               child: ChartBar(

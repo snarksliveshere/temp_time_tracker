@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/foundation.dart';
 
-class Transaction {
+class Task {
   String id;
   String title;
   String description;
@@ -10,7 +10,7 @@ class Transaction {
   DateTime date;
   bool flagDivider;
 
-  Transaction({
+  Task({
     @required this.id,
     @required this.title,
     this.description,
@@ -20,7 +20,7 @@ class Transaction {
   });
 
 
-  Transaction.headerDivider({
+  Task.headerDivider({
     @required this.date,
     @required this.flagDivider
   });
