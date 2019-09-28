@@ -151,10 +151,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _scrollToTask(DateTime date) {
 
-    print(date.toString());
+//    print(date.toString());
     String dateFormat = DateFormat.yMd().format(date);
     int index = _userTasks.indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
-    print(index);
+//    print(index);
+    // далее надо вытащить все данные листа до этого момента index
+    List<Task> newUserTaskList = _userTasks.getRange(0, index).toList();
+//    print(newUserTaskList.length);
+
+    if (newUserTaskList.length == 0) {
+      return;
+    }
+    List<Task> listOfDividers = newUserTaskList.where((el) => el.flagDivider).toList();
+    List<Task> listOfTask = newUserTaskList.where((el) => !el.flagDivider).toList();
+    print(listOfDividers.length);
+    print(listOfTask.length);
 
     setState(() {
       _scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);

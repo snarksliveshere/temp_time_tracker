@@ -16,10 +16,13 @@ class TaskItem extends StatelessWidget {
   final Function deleteTx;
   final Function editTx;
 
+
   @override
   Widget build(BuildContext context) {
+    GlobalKey containerKey = GlobalKey();
     return task.flagDivider
         ? Container(
+            key: containerKey,
             width: double.infinity,
             margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
             padding: EdgeInsets.only(bottom: 5.0),
@@ -47,6 +50,7 @@ class TaskItem extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
+              key: containerKey,
               padding: EdgeInsets.all(5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
