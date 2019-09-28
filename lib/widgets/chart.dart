@@ -10,7 +10,7 @@ class Chart extends StatelessWidget {
   Chart(this.recentTasks);
 
   List<Map<String, Object>> get groupedTaskValues {
-    return List.generate(7, (index) {
+    return List.generate(30, (index) {
       final DateTime weekDay = DateTime.now().subtract(
         Duration(days: index),
       );
@@ -49,21 +49,83 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(20),
       child: Padding(
         padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTaskValues.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                data['dateDM'],
-                data['dayOfWeek'],
-                data['amount'] as double > 24 ? 24 : data['amount'],
-                _getFraction(data['amount'])
-              ),
-            );
-          }).toList(),
-        ),
+        child:  _getRowContainerChart(),
       ),
     );
   }
+
+  Widget _getRowFlexibleChart() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        ..._getFlexibleChart()
+      ],
+    );
+  }
+
+  Widget _getRowContainerChart() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      controller: ScrollController(
+        initialScrollOffset: 1000.0
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          ..._getContainerChart()
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _getContainerChart() {
+    return groupedTaskValues.map((data) {
+      return Container(
+        width: 40.0,
+        child: ChartBar(
+            data['dateDM'],
+            data['dayOfWeek'],
+            data['amount'] as double > 24 ? 24 : data['amount'],
+            _getFraction(data['amount'])
+        ),
+      );
+    }).toList();
+  }
+
+  List<Widget> _getFlexibleChart() {
+    return groupedTaskValues.map((data) {
+      return Flexible(
+        fit: FlexFit.loose,
+        child: ChartBar(
+            data['dateDM'],
+            data['dayOfWeek'],
+            data['amount'] as double > 24 ? 24 : data['amount'],
+            _getFraction(data['amount'])
+        ),
+      );
+    }).toList();
+  }
+
+
+
+  _getChartViewBuilder() {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+      return Container(
+        width: 25.0,
+        child: ChartBar(
+            groupedTaskValues[index]['dateDM'],
+            groupedTaskValues[index]['dayOfWeek'],
+            groupedTaskValues[index]['amount'] as double > 24
+                ? 24
+                : groupedTaskValues[index]['amount'],
+          _getFraction(groupedTaskValues[index]['amount'])
+        ),
+      );
+      },
+      itemCount: groupedTaskValues.length,
+      );
+  }
 }
+
+
