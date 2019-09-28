@@ -21,7 +21,6 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey containerKey = GlobalKey();
-    print(task.description);
     return task.flagDivider
         ? Container(
             key: containerKey,
