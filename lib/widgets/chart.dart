@@ -6,8 +6,9 @@ import '../models/task.dart';
 
 class Chart extends StatelessWidget {
   final List<Task> recentTasks;
+  final Function scrollTo;
 
-  Chart(this.recentTasks);
+  Chart(this.recentTasks, this.scrollTo);
 
   List<Map<String, Object>> get groupedTaskValues {
     return List.generate(30, (index) {
@@ -80,13 +81,18 @@ class Chart extends StatelessWidget {
 
   List<Widget> _getContainerChart() {
     return groupedTaskValues.map((data) {
-      return Container(
-        width: 40.0,
-        child: ChartBar(
-            data['dateDM'],
-            data['dayOfWeek'],
-            data['amount'] as double > 24 ? 24 : data['amount'],
-            _getFraction(data['amount'])
+      return GestureDetector(
+        onTap: () {
+          this.scrollTo();
+        },
+        child: Container(
+          width: 40.0,
+          child: ChartBar(
+              data['dateDM'],
+              data['dayOfWeek'],
+              data['amount'] as double > 24 ? 24 : data['amount'],
+              _getFraction(data['amount'])
+          ),
         ),
       );
     }).toList();

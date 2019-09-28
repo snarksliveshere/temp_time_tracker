@@ -8,8 +8,9 @@ class TaskList extends StatelessWidget {
   final List<Task> tasks;
   final Function deleteTx;
   final Function editTx;
+  final ScrollController scrollController;
 
-  TaskList(this.tasks, this.deleteTx, this.editTx);
+  TaskList(this.tasks, this.deleteTx, this.editTx, this.scrollController);
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class TaskList extends StatelessWidget {
                 return TaskItem(task: tasks[index], deleteTx: deleteTx, editTx: editTx,);
               },
               itemCount: tasks.length,
+              controller: this.scrollController,
             ),
     );
   }

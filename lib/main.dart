@@ -66,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Task> _userTasks = [];
   BuildContext ctx;
   bool _showChart = false;
+  final _scrollController = ScrollController();
 
   List<Task> get _recentTasks {
     _userTasks.sort((a, b) {
@@ -147,6 +148,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _scrollToTask() {
+    setState(() {
+      _scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+    });
+  }
+
   void _saveTask(String id, String txTitle, String txDescription,
       double txAmount, DateTime chosenDate, color) {
     List<Task> compare = _userTasks.where((tx) {
@@ -220,7 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       appBar.preferredSize.height -
                       mediaQuery.padding.top) *
                   0.7,
-              child: Chart(_recentTasks))
+              child: Chart(_recentTasks, _scrollToTask))
           : txListWidget
     ];
   }
@@ -233,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
             0.3,
-        child: Chart(_recentTasks),
+        child: Chart(_recentTasks,_scrollToTask),
       ),
       txListWidget
     ];
@@ -276,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
             0.7,
-        child: TaskList(_userTasks, _deleteTask, _editTask));
+        child: TaskList(_userTasks, _deleteTask, _editTask, _scrollController));
 
     var pageBody = SafeArea(
       child: SingleChildScrollView(
