@@ -101,7 +101,6 @@ class TaskItem extends StatelessWidget {
                                 flex: 2,
                                 child: Tooltip(
                                   message: task.description,
-                                  height: 24,
                                   child: Text(
                                     ' more',
                                     style: TextStyle(
