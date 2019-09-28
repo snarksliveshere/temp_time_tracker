@@ -132,8 +132,11 @@ class _MyHomePageState extends State<MyHomePage> {
     _startEditTask(context, id);
   }
 
+  DateTime _editingTaskDatetime;
+
   void _startEditTask(BuildContext ctx, String id) {
     Task task = _userTasks.firstWhere((el) => el.id == id);
+    _editingTaskDatetime = task.date;
     showModalBottomSheet(
       context: ctx,
       isScrollControlled: true,
@@ -146,6 +149,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _saveTask(String id, String txTitle, String txDescription,
       double txAmount, DateTime chosenDate, color) {
+    List<Task> compare = _userTasks.where((tx) {
+      return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM &&
+          tx.flagDivider;
+    }).toList();
+
+    final Task headerDivider = Task.headerDivider(
+      date: chosenDate,
+      flagDivider: true,
+    );
+
     final Task editingTask = Task(
         title: txTitle,
         description: txDescription,
@@ -155,8 +168,17 @@ class _MyHomePageState extends State<MyHomePage> {
         flagDivider: false,
         color: color);
 
+    List<Task> tasks =
+    _userTasks.where((el) => el.date == _editingTaskDatetime).toList();
+
     setState(() {
+      if (compare.isEmpty) {
+        _userTasks.add(headerDivider);
+      }
       _userTasks.removeWhere((el) => el.id == id);
+      if (tasks.length <= 2) {
+        _userTasks.removeWhere((el) => el.date == _editingTaskDatetime);
+      }
       _userTasks.add(editingTask);
     });
   }
