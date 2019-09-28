@@ -29,23 +29,23 @@ class MyApp extends StatelessWidget {
           errorColor: Colors.red,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-            title: TextStyle(
-              fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
-            button: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+                title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                button: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+                  title: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
           )),
       home: MyHomePage(),
     );
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _showChart = false;
 
   List<Task> get _recentTasks {
-    _userTasks.sort((a,b) {
+    _userTasks.sort((a, b) {
       if (a.flagDivider || b.flagDivider) {
         a.date.add(Duration(seconds: 1));
         b.date.add(Duration(seconds: 1));
@@ -73,11 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return _userTasks;
   }
 
-  void _addNewTask(
-      String txTitle, String txDescription, double txAmount, DateTime chosenDate, color) {
-
+  void _addNewTask(String txTitle, String txDescription, double txAmount,
+      DateTime chosenDate, color) {
     List<Task> compare = _userTasks.where((tx) {
-      return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM && tx.flagDivider;
+      return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM &&
+          tx.flagDivider;
     }).toList();
 
     var rand = Random();
@@ -86,14 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
       flagDivider: true,
     );
     final Task newTx = Task(
-      title: txTitle,
-      description: txDescription,
-      amount: txAmount,
-      date: chosenDate,
-      id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
-      flagDivider: false,
-      color: color
-    );
+        title: txTitle,
+        description: txDescription,
+        amount: txAmount,
+        date: chosenDate,
+        id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
+        flagDivider: false,
+        color: color);
 
     setState(() {
       if (compare.isEmpty) {
@@ -105,7 +104,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _deleteTask(String id) {
     setState(() {
-      _userTasks.removeWhere((el) => el.id == id);
+      Task task = _userTasks.firstWhere((el) => el.id == id);
+      List<Task> tasks =
+          _userTasks.where((el) => el.date == task.date).toList();
+      print(tasks.length);
+      if (tasks.length <= 2) {
+        _userTasks.removeWhere((el) => el.date == task.date);
+      } else {
+        _userTasks.removeWhere((el) => el.id == id);
+      }
     });
   }
 
@@ -142,11 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       _showChart
           ? Container(
-          height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
-              mediaQuery.padding.top) *
-              0.7,
-          child: Chart(_recentTasks))
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTasks))
           : txListWidget
     ];
   }
@@ -156,8 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       Container(
         height: (mediaQuery.size.height -
-            appBar.preferredSize.height -
-            mediaQuery.padding.top) *
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
             0.3,
         child: Chart(_recentTasks),
       ),
@@ -172,35 +179,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-      middle: Text(
-        'Temp Time Tracker',
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => _startAddNewTask(context),
-            child: Icon(CupertinoIcons.add),
-          ),
-        ],
-      ),
-    )
+            middle: Text(
+              'Temp Time Tracker',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => _startAddNewTask(context),
+                  child: Icon(CupertinoIcons.add),
+                ),
+              ],
+            ),
+          )
         : AppBar(
-      title: Text(
-        'Temp Time Tracker',
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTask(context),
-        ),
-      ],
-    );
+            title: Text(
+              'Temp Time Tracker',
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTask(context),
+              ),
+            ],
+          );
 
     final Widget txListWidget = Container(
         height: (mediaQuery.size.height -
-            appBar.preferredSize.height -
-            mediaQuery.padding.top) *
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
             0.7,
         child: TaskList(_userTasks, _deleteTask));
 
@@ -220,20 +227,20 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
-      child: pageBody,
-      navigationBar: appBar,
-    )
+            child: pageBody,
+            navigationBar: appBar,
+          )
         : Scaffold(
-      appBar: appBar,
-      body: pageBody,
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTask(context),
-      ),
-    );
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _startAddNewTask(context),
+                  ),
+          );
   }
 }
