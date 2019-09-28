@@ -31,16 +31,9 @@ class _NewTaskState extends State<NewTask> {
   }
 
   void _submitData() {
-    if (_amountController.text.isEmpty) {
-      return;
-    }
     final enteredTitle = _titleController.text;
     final enteredDescription = _descriptionController.text;
     final enteredAmount = double.parse(_amountController.text);
-
-    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
-      return;
-    }
 
     widget.addTx(
       enteredTitle,
@@ -77,7 +70,10 @@ class _NewTaskState extends State<NewTask> {
         Flexible(
           flex: 10,
           child: TextField(
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration: InputDecoration(
+              labelText: 'Title',
+              errorText: _titleController.text.isEmpty ? 'required' : null,
+            ),
             controller: _titleController,
             onSubmitted: (_) => _submitData(),
             // onChanged: (val) {
@@ -89,7 +85,10 @@ class _NewTaskState extends State<NewTask> {
         Flexible(
           flex: 2,
           child: TextField(
-            decoration: InputDecoration(labelText: 'Amount'),
+            decoration: InputDecoration(
+              labelText: 'Amount',
+              errorText: _amountController.text.isEmpty ? 'required' : null,
+            ),
             controller: _amountController,
             keyboardType: TextInputType.number,
             onSubmitted: (_) => _submitData(),
@@ -103,7 +102,10 @@ class _NewTaskState extends State<NewTask> {
   List<Widget> getPortraitMode() {
     return [
       TextField(
-        decoration: InputDecoration(labelText: 'Title'),
+        decoration: InputDecoration(
+          labelText: 'Title',
+          errorText: _titleController.text.isEmpty ? 'required' : null,
+        ),
         controller: _titleController,
         onSubmitted: (_) => _submitData(),
         // onChanged: (val) {
@@ -111,7 +113,10 @@ class _NewTaskState extends State<NewTask> {
         // },
       ),
       TextField(
-        decoration: InputDecoration(labelText: 'Amount'),
+        decoration: InputDecoration(
+          labelText: 'Amount',
+          errorText: _amountController.text.isEmpty ? 'required' : null,
+        ),
         controller: _amountController,
         keyboardType: TextInputType.number,
         onSubmitted: (_) => _submitData(),
@@ -159,14 +164,18 @@ class _NewTaskState extends State<NewTask> {
                     ),
                     Flexible(
                       flex: 3,
-                      child: Text(
-                        _selectedDate == null
-                            ? 'No Date Chosen'
-                            : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: _selectedDate == null
+                          ? Text(
+                              'No Date Chosen1',
+                              style: TextStyle(
+                                  color: Theme.of(context).errorColor),
+                            )
+                          : Text(
+                              'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                     VerticalDivider(
                       width: 20.0,
