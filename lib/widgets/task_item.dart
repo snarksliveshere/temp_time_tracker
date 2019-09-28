@@ -120,6 +120,7 @@ class TaskItem extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                this.task.title = 'new';
               },
             ),
             FlatButton(
