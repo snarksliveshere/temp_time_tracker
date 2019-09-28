@@ -166,9 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Task> listOfTask = newUserTaskList.where((el) => !el.flagDivider).toList();
     print(listOfDividers.length);
     print(listOfTask.length);
+    double sum = listOfDividers.length * 50.0 + listOfTask.length * 90.0;
 
     setState(() {
-      _scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+      _scrollController.animateTo(sum, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     });
   }
 

@@ -10,12 +10,13 @@ class TaskItem extends StatelessWidget {
     @required this.task,
     @required this.deleteTx,
     @required this.editTx,
+    @required this.getGlobalKey,
   }) : super(key: key);
 
   final Task task;
   final Function deleteTx;
   final Function editTx;
-
+  final Function getGlobalKey;
 
   @override
   Widget build(BuildContext context) {
