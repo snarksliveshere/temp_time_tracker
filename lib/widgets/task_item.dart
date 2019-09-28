@@ -21,6 +21,7 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey containerKey = GlobalKey();
+    print(task.description);
     return task.flagDivider
         ? Container(
             key: containerKey,
@@ -95,19 +96,20 @@ class TaskItem extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            Flexible(
-                              flex: 2,
-                              child: Tooltip(
-                                message: task.description,
-                                height: 24,
-                                child: Text(
-                                  'more',
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 14.0),
+                            if (task.description != '')
+                              Flexible(
+                                flex: 2,
+                                child: Tooltip(
+                                  message: task.description,
+                                  height: 24,
+                                  child: Text(
+                                    ' more',
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 14.0),
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                         Text(
