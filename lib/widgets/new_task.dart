@@ -137,6 +137,7 @@ class _NewTaskState extends State<NewTask> {
               Container(
                 height: 70.0,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Flexible(
                       flex: 3,
