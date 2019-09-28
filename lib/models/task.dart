@@ -9,6 +9,7 @@ class Task {
   double amount;
   DateTime date;
   bool flagDivider;
+  var color;
 
   Task({
     @required this.id,
@@ -17,13 +18,10 @@ class Task {
     @required this.amount,
     @required this.date,
     @required this.flagDivider,
+    @required this.color,
   });
 
-
-  Task.headerDivider({
-    @required this.date,
-    @required this.flagDivider
-  });
+  Task.headerDivider({@required this.date, @required this.flagDivider});
 
   String get dateFormatDM {
     return DateFormat.yMd().format(this.date);
@@ -36,6 +34,4 @@ class Task {
   String dateFormatDayOfWeek(weekday) {
     return DateFormat.yMd().format(weekday).substring(0, 1);
   }
-
-
 }

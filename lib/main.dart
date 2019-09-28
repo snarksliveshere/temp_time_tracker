@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _addNewTask(
-      String txTitle, String txDescription, double txAmount, DateTime chosenDate) {
+      String txTitle, String txDescription, double txAmount, DateTime chosenDate, color) {
 
     List<Task> compare = _userTasks.where((tx) {
       return tx.getDateFormatDM(chosenDate) == tx.dateFormatDM && tx.flagDivider;
@@ -92,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       date: chosenDate,
       id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
       flagDivider: false,
+      color: color
     );
 
     setState(() {

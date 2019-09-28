@@ -46,6 +46,7 @@ class TaskItem extends StatelessWidget {
             ),
             child: ListTile(
               leading: CircleAvatar(
+                backgroundColor: task.color,
                 radius: 30.0,
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),

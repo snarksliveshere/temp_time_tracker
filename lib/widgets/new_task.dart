@@ -37,6 +37,7 @@ class _NewTaskState extends State<NewTask> {
       enteredDescription,
       enteredAmount,
       _selectedDate,
+      _mainColor,
     );
 
     Navigator.of(context).pop();
@@ -203,7 +204,6 @@ class _NewTaskState extends State<NewTask> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() => _mainColor = _tempMainColor);
-                setState(() => _shadeColor = _tempShadeColor);
               },
             ),
           ],
@@ -224,7 +224,5 @@ class _NewTaskState extends State<NewTask> {
   }
 
   ColorSwatch _tempMainColor;
-  Color _tempShadeColor;
   ColorSwatch _mainColor = Colors.blue;
-  Color _shadeColor = Colors.blue[800];
 }
