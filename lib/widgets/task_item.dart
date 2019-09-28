@@ -53,6 +53,9 @@ class TaskItem extends StatelessWidget {
                   child: FittedBox(
                     child: Text(
                       '${task.amount.toStringAsFixed(2)} H',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
