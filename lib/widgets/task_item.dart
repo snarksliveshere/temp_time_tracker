@@ -73,13 +73,43 @@ class TaskItem extends StatelessWidget {
                     flex: 8,
                     fit: FlexFit.tight,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           task.title,
                           style: Theme.of(context).textTheme.title,
                         ),
+                        Row(
+                          children: <Widget>[
+                            Flexible(
+                              flex: 8,
+                              child: Text(
+                                task.description,
+                                style: Theme.of(context).textTheme.subhead,
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: Tooltip(
+                                message: task.description,
+                                height: 24,
+                                child: Text(
+                                  'more',
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 14.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(
                           DateFormat.yMMMd().format(task.date),
+                          style: TextStyle(
+                            fontSize: 10.0,
+                          ),
                         ),
                       ],
                     ),

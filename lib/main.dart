@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
                 button: TextStyle(
                   color: Colors.white,
                 ),
+                subhead: TextStyle(
+                  fontSize: 14,
+                ),
               ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
