@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 //import 'package:flutter/services.dart'; // SystemChrome
 
@@ -148,7 +149,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _scrollToTask() {
+  void _scrollToTask(DateTime date) {
+
+    print(date.toString());
+    String dateFormat = DateFormat.yMd().format(date);
+    int index = _userTasks.indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
+    print(index);
+
     setState(() {
       _scrollController.animateTo(100, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     });

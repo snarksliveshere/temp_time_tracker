@@ -28,6 +28,7 @@ class Chart extends StatelessWidget {
       }
 
       return {
+        'now' : weekDay,
         'dateDM': DateFormat.Md().format(weekDay),
         'dayOfWeek': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum,
@@ -83,7 +84,7 @@ class Chart extends StatelessWidget {
     return groupedTaskValues.map((data) {
       return GestureDetector(
         onTap: () {
-          this.scrollTo();
+          this.scrollTo(data['now']);
         },
         child: Container(
           width: 40.0,
