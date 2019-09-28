@@ -9,10 +9,12 @@ class TaskItem extends StatelessWidget {
     Key key,
     @required this.task,
     @required this.deleteTx,
+    @required this.editTx,
   }) : super(key: key);
 
   final Task task;
   final Function deleteTx;
+  final Function editTx;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +89,7 @@ class TaskItem extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(Icons.edit),
                       color: Theme.of(context).primaryColor,
-                      onPressed: () => this.deleteTx(task.id),
+                      onPressed: () => this.editTx(task.id),
                     ),
                   ),
                   Flexible(

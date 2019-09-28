@@ -116,6 +116,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _editTask(String id) {
+    setState(() {
+      Task task = _userTasks.firstWhere((el) => el.id == id);
+      task.title = 'new';
+    });
+  }
+
   void _startAddNewTask(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -209,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
             0.7,
-        child: TaskList(_userTasks, _deleteTask));
+        child: TaskList(_userTasks, _deleteTask, _editTask));
 
     var pageBody = SafeArea(
       child: SingleChildScrollView(

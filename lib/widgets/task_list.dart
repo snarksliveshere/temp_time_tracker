@@ -7,8 +7,9 @@ import './task_item.dart';
 class TaskList extends StatelessWidget {
   final List<Task> tasks;
   final Function deleteTx;
+  final Function editTx;
 
-  TaskList(this.tasks, this.deleteTx);
+  TaskList(this.tasks, this.deleteTx, this.editTx);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class TaskList extends StatelessWidget {
             )
           : ListView.builder(
               itemBuilder: (context, index) {
-                return TaskItem(task: tasks[index], deleteTx: deleteTx);
+                return TaskItem(task: tasks[index], deleteTx: deleteTx, editTx: editTx,);
               },
               itemCount: tasks.length,
             ),
