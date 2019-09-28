@@ -7,13 +7,12 @@ import './adaptive_flat_button.dart';
 
 class EditTask extends StatefulWidget {
   Function editTx;
+  String id;
   String title;
   String description;
   double amount;
   DateTime date;
   var color;
-  String id;
-
 
   EditTask(this.id, this.title, this.description, this.amount, this.date,
       this.color, this.editTx);
@@ -27,6 +26,7 @@ class _EditTaskState extends State<EditTask> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
+  String _id;
   DateTime _selectedDate;
 
 
@@ -38,6 +38,7 @@ class _EditTaskState extends State<EditTask> {
     _descriptionController.text = widget.description;
     _selectedDate = widget.date;
     _mainColor = widget.color;
+    _id = widget.id;
   }
 
   _checkValid() {
@@ -57,6 +58,7 @@ class _EditTaskState extends State<EditTask> {
     _mainColor = widget.color;
 
     widget.editTx(
+      _id,
       enteredTitle,
       enteredDescription,
       enteredAmount,
@@ -217,7 +219,7 @@ class _EditTaskState extends State<EditTask> {
               ),
               RaisedButton(
                 color: Theme.of(context).primaryColorDark,
-                child: Text('Add Task'),
+                child: Text('Edit Task'),
                 textColor: Theme.of(context).textTheme.button.color,
                 onPressed: _checkValid(),
               ),

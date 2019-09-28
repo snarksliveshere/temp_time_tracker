@@ -142,8 +142,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-  void _saveTask() {
-    print('save it');
+  void _saveTask(String id, String txTitle, String txDescription, double txAmount,
+      DateTime chosenDate, color) {
+    print('save');
   }
 
   void _startAddNewTask(BuildContext ctx) {
