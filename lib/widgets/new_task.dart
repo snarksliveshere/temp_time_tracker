@@ -20,6 +20,16 @@ class _NewTaskState extends State<NewTask> {
   final _descriptionController = TextEditingController();
   DateTime _selectedDate;
 
+  _checkValid() {
+    if (_amountController.text.isNotEmpty &&
+        _titleController.text.isNotEmpty &&
+        _selectedDate != null) {
+      return _submitData;
+    } else {
+      return null;
+    }
+  }
+
   void _submitData() {
     if (_amountController.text.isEmpty) {
       return;
@@ -47,7 +57,9 @@ class _NewTaskState extends State<NewTask> {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(2019),
+            firstDate: DateTime.now().subtract(
+              Duration(days: 30),
+            ),
             lastDate: DateTime.now())
         .then((val) {
       if (val == null) {
@@ -177,7 +189,7 @@ class _NewTaskState extends State<NewTask> {
                 color: Theme.of(context).primaryColorDark,
                 child: Text('Add Task'),
                 textColor: Theme.of(context).textTheme.button.color,
-                onPressed: _submitData,
+                onPressed: _checkValid(),
               ),
             ],
           ),
