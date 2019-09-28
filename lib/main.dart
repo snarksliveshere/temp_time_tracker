@@ -166,20 +166,20 @@ class _MyHomePageState extends State<MyHomePage> {
         date: chosenDate,
         id: id,
         flagDivider: false,
-        color: color);
-
-    List<Task> tasks =
-    _userTasks.where((el) => el.date == _editingTaskDatetime).toList();
+        color: color
+    );
 
     setState(() {
       if (compare.isEmpty) {
         _userTasks.add(headerDivider);
       }
       _userTasks.removeWhere((el) => el.id == id);
-      if (tasks.length <= 2) {
+      _userTasks.add(editingTask);
+      List<Task> tasks =
+      _userTasks.where((el) => el.date == _editingTaskDatetime).toList();
+      if (tasks.length <= 1) {
         _userTasks.removeWhere((el) => el.date == _editingTaskDatetime);
       }
-      _userTasks.add(editingTask);
     });
   }
 
