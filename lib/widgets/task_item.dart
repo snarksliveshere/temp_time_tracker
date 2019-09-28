@@ -19,16 +19,15 @@ class TaskItem extends StatelessWidget {
     return task.flagDivider
         ? Container(
             width: double.infinity,
-            margin: EdgeInsets.only(top:20.0, left: 20.0, right: 20.0),
+            margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
             padding: EdgeInsets.only(bottom: 5.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Theme.of(context).primaryColorLight,
-                  width: 1.0,
-                  style: BorderStyle.solid
-                ),
+                    color: Theme.of(context).primaryColorLight,
+                    width: 1.0,
+                    style: BorderStyle.solid),
               ),
             ),
             child: Text(
@@ -44,42 +43,100 @@ class TaskItem extends StatelessWidget {
               vertical: 8,
               horizontal: 5,
             ),
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: task.color,
-                radius: 30.0,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: FittedBox(
-                    child: Text(
-                      '${task.amount.toStringAsFixed(2)} H',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Flexible(
+                    flex: 3,
+                    child: CircleAvatar(
+                      backgroundColor: task.color,
+                      radius: 30.0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: FittedBox(
+                          child: Text(
+                            '${task.amount.toStringAsFixed(2)} H',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              title: Text(
-                task.title,
-                style: Theme.of(context).textTheme.title,
-              ),
-              subtitle: Text(
-                DateFormat.yMMMd().format(task.date),
-              ),
-              trailing: MediaQuery.of(context).size.width > 360
-                  ? FlatButton.icon(
+                  Flexible(
+                    flex: 8,
+                    fit: FlexFit.tight,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          task.title,
+                          style: Theme.of(context).textTheme.title,
+                        ),
+                        Text(
+                          DateFormat.yMMMd().format(task.date),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
+                      icon: const Icon(Icons.edit),
+                      color: Theme.of(context).primaryColor,
                       onPressed: () => this.deleteTx(task.id),
-                      textColor: Theme.of(context).errorColor,
-                      icon: const Icon(Icons.delete),
-                      label: const Text('Delete'),
-                    )
-                  : IconButton(
+                    ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: IconButton(
                       icon: const Icon(Icons.delete),
                       color: Theme.of(context).errorColor,
                       onPressed: () => this.deleteTx(task.id),
                     ),
+                  ),
+                ],
+              ),
             ),
           );
+  }
+
+  Widget getListTile(context) {
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: task.color,
+        radius: 30.0,
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: FittedBox(
+            child: Text(
+              '${task.amount.toStringAsFixed(2)} H',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+      title: Text(
+        task.title,
+        style: Theme.of(context).textTheme.title,
+      ),
+      subtitle: Text(
+        DateFormat.yMMMd().format(task.date),
+      ),
+      trailing: Column(
+        children: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.delete),
+            color: Theme.of(context).errorColor,
+            onPressed: () => this.deleteTx(task.id),
+          ),
+        ],
+      ),
+    );
   }
 }
