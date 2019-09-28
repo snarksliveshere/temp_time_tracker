@@ -135,16 +135,27 @@ class _MyHomePageState extends State<MyHomePage> {
       context: ctx,
       isScrollControlled: true,
       builder: (_) {
-        return EditTask(task.id, task.title, task.description, task.amount, task.date, task.color, _saveTask);
+        return EditTask(task.id, task.title, task.description, task.amount,
+            task.date, task.color, _saveTask);
       },
     );
   }
 
+  void _saveTask(String id, String txTitle, String txDescription,
+      double txAmount, DateTime chosenDate, color) {
+    final Task editingTask = Task(
+        title: txTitle,
+        description: txDescription,
+        amount: txAmount,
+        date: chosenDate,
+        id: id,
+        flagDivider: false,
+        color: color);
 
-
-  void _saveTask(String id, String txTitle, String txDescription, double txAmount,
-      DateTime chosenDate, color) {
-    print('save');
+    setState(() {
+      _userTasks.removeWhere((el) => el.id == id);
+      _userTasks.add(editingTask);
+    });
   }
 
   void _startAddNewTask(BuildContext ctx) {

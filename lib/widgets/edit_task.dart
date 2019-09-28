@@ -55,8 +55,6 @@ class _EditTaskState extends State<EditTask> {
     final enteredTitle = _titleController.text;
     final enteredDescription = _descriptionController.text;
     final enteredAmount = double.parse(_amountController.text);
-    _mainColor = widget.color;
-
     widget.editTx(
       _id,
       enteredTitle,
