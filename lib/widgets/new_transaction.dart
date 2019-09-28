@@ -59,8 +59,59 @@ class _NewTransactionState extends State<NewTransaction> {
     });
   }
 
+  Widget getLandscapeMode() {
+    return Row(
+      children: <Widget>[
+        Flexible(
+          flex: 10,
+          child: TextField(
+            decoration: InputDecoration(labelText: 'Title'),
+            controller: _titleController,
+            onSubmitted: (_) => _submitData(),
+            // onChanged: (val) {
+            //   titleInput = val;
+            // },
+          ),
+        ),
+        VerticalDivider(),
+        Flexible(
+          flex: 2,
+          child:   TextField(
+            decoration: InputDecoration(labelText: 'Amount'),
+            controller: _amountController,
+            keyboardType: TextInputType.number,
+            onSubmitted: (_) => _submitData(),
+            // onChanged: (val) => amountInput = val,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> getPortraitMode() {
+    return [
+      TextField(
+        decoration: InputDecoration(labelText: 'Title'),
+        controller: _titleController,
+        onSubmitted: (_) => _submitData(),
+        // onChanged: (val) {
+        //   titleInput = val;
+        // },
+      ),
+      TextField(
+        decoration: InputDecoration(labelText: 'Amount'),
+        controller: _amountController,
+        keyboardType: TextInputType.number,
+        onSubmitted: (_) => _submitData(),
+        // onChanged: (val) => amountInput = val,
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -74,14 +125,10 @@ class _NewTransactionState extends State<NewTransaction> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              TextField(
-                decoration: InputDecoration(labelText: 'Title'),
-                controller: _titleController,
-                onSubmitted: (_) => _submitData(),
-                // onChanged: (val) {
-                //   titleInput = val;
-                // },
-              ),
+              if(isLandscape)
+                getLandscapeMode(),
+              if(!isLandscape)
+                ...getPortraitMode(),
               TextField(
                 decoration: InputDecoration(labelText: 'Description'),
                 controller: _descriptionController,
@@ -89,13 +136,6 @@ class _NewTransactionState extends State<NewTransaction> {
                 // onChanged: (val) {
                 //   titleInput = val;
                 // },
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                onSubmitted: (_) => _submitData(),
-                // onChanged: (val) => amountInput = val,
               ),
               Container(
                 height: 70.0,
