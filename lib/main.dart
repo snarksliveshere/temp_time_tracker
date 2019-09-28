@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
 //import 'package:flutter/services.dart'; // SystemChrome
 
 import './widgets/new_task.dart';
+import './widgets/edit_task.dart';
 import './widgets/task_list.dart';
 import './widgets/chart.dart';
 import './models/task.dart';
@@ -59,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Task> _userTasks = [];
-
+  BuildContext ctx;
   bool _showChart = false;
 
   List<Task> get _recentTasks {
@@ -116,11 +118,32 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+//  void _editTask(String id) {
+//    setState(() {
+//      Task task = _userTasks.firstWhere((el) => el.id == id);
+//      task.title = 'new';
+//    });
+//  }
+
   void _editTask(String id) {
-    setState(() {
-      Task task = _userTasks.firstWhere((el) => el.id == id);
-      task.title = 'new';
-    });
+    _startEditTask(context, id);
+  }
+
+  void _startEditTask(BuildContext ctx, String id) {
+    Task task = _userTasks.firstWhere((el) => el.id == id);
+    showModalBottomSheet(
+      context: ctx,
+      isScrollControlled: true,
+      builder: (_) {
+        return EditTask(task.id, task.title, task.description, task.amount, task.date, task.color, _saveTask);
+      },
+    );
+  }
+
+
+
+  void _saveTask() {
+    print('save it');
   }
 
   void _startAddNewTask(BuildContext ctx) {

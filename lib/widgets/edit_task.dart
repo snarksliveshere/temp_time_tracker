@@ -27,7 +27,6 @@ class _EditTaskState extends State<EditTask> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
-  String _id;
   DateTime _selectedDate;
 
 
@@ -38,7 +37,7 @@ class _EditTaskState extends State<EditTask> {
     _amountController.text = '${widget.amount}';
     _descriptionController.text = widget.description;
     _selectedDate = widget.date;
-    _id = widget.id;
+    _mainColor = widget.color;
   }
 
   _checkValid() {
