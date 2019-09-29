@@ -34,4 +34,25 @@ class Task {
   String dateFormatDayOfWeek(weekday) {
     return DateFormat.yMd().format(weekday).substring(0, 1);
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id': this.id,
+        'title': this.title,
+        'description': this.description,
+        'amount': this.amount,
+        'date': this.getDateFormatDM(this.date),
+        'flagDivider': this.flagDivider,
+        'color': this.color
+      };
+
+  Task.fromJson(Map<String, dynamic> json)
+      : this.id = json['id'],
+        this.title = json['title'],
+        this.description = json['description'],
+        this.amount = json['amount'],
+        this.date = json['date'],
+        this.flagDivider = json['flagDivider'],
+        this.color = json['color']
+  ;
 }
