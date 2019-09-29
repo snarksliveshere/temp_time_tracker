@@ -55,4 +55,12 @@ class Task {
         this.flagDivider = json['flagDivider'],
         this.color = json['color']
   ;
+
+  static List encodeToJson(List<Task>list){
+    List jsonList = List();
+    list.map((item)=>
+        jsonList.add(item.toJson())
+    ).toList();
+    return jsonList;
+  }
 }

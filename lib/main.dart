@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -54,21 +55,49 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
           )),
-      home: MyHomePage(),
+      home: MyHomePage(
+        storage: Storage(),
+      ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  final Storage storage;
+
+  MyHomePage({Key key, @required this.storage}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Task> _userTasks = [];
+  String state;
   BuildContext ctx;
   bool _showChart = false;
   final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.storage.readData().then((String value){
+      setState(() {
+        state = value;
+      });
+    });
+//    _f = loadFile(context);
+  }
+
+  Future<File> writeData() async {
+    setState(() {
+//      state = controller.text
+//      controller.text = ''
+      state = 'olal';
+    });
+
+    return widget.storage.writeData(state);
+  }
 
   List<Task> get _recentTasks {
     _userTasks.sort((a, b) {
@@ -102,11 +131,29 @@ class _MyHomePageState extends State<MyHomePage> {
         flagDivider: false,
         color: color);
 
+    Map<String, dynamic> jsonString = newTx.toJson();
+    List<Task> listTask = _userTasks;
+    listTask.add(newTx);
+
+    List jsonL = Task.encodeToJson(listTask);
+    print('$jsonL');
+
+//    List<String> listJson;
+//
+//    for (Task t in listTask) {
+//      listJson.add(t.toJson().toString());
+//    }
+
+
+
+
     setState(() {
       if (compare.isEmpty) {
         _userTasks.add(headerDivider);
       }
       _userTasks.add(newTx);
+//      _userTasks = listTask;
+      widget.storage.writeData(jsonString.toString());
     });
   }
 
@@ -151,10 +198,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _scrollToTask(DateTime date) {
-
 //    print(date.toString());
     String dateFormat = DateFormat.yMd().format(date);
-    int index = _userTasks.indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
+    int index = _userTasks
+        .indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
     print(index);
     // далее надо вытащить все данные листа до этого момента index
     if (index == -1) {
@@ -164,18 +211,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (newUserTaskList.length == 0) {
       setState(() {
-        _scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        _scrollController.animateTo(0,
+            duration: Duration(milliseconds: 300), curve: Curves.easeIn);
       });
       return;
     }
-    List<Task> listOfDividers = newUserTaskList.where((el) => el.flagDivider).toList();
-    List<Task> listOfTask = newUserTaskList.where((el) => !el.flagDivider).toList();
+    List<Task> listOfDividers =
+        newUserTaskList.where((el) => el.flagDivider).toList();
+    List<Task> listOfTask =
+        newUserTaskList.where((el) => !el.flagDivider).toList();
     print(listOfDividers.length);
     print(listOfTask.length);
     double sum = listOfDividers.length * 50.0 + listOfTask.length * 90.0;
 
     setState(() {
-      _scrollController.animateTo(sum, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+      _scrollController.animateTo(sum,
+          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     });
   }
 
@@ -198,8 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
         date: chosenDate,
         id: id,
         flagDivider: false,
-        color: color
-    );
+        color: color);
 
     setState(() {
       if (compare.isEmpty) {
@@ -208,7 +258,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _userTasks.removeWhere((el) => el.id == id);
       _userTasks.add(editingTask);
       List<Task> tasks =
-      _userTasks.where((el) => el.date == _editingTaskDatetime).toList();
+          _userTasks.where((el) => el.date == _editingTaskDatetime).toList();
       if (tasks.length <= 1) {
         _userTasks.removeWhere((el) => el.date == _editingTaskDatetime);
       }
@@ -265,32 +315,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 appBar.preferredSize.height -
                 mediaQuery.padding.top) *
             0.3,
-        child: Chart(_recentTasks,_scrollToTask),
+        child: Chart(_recentTasks, _scrollToTask),
       ),
       txListWidget
     ];
   }
 
-  var _f;
-  @override
-  void initState() {
-    super.initState();
-    _f = loadFile(context);
 
-  }
 
-  Future<String> loadFile(BuildContext context) async {
-    return await DefaultAssetBundle.of(context).loadString('assets/file.txt').then((val) {
-      print(val);
-      return val;
-    });
-  }
+
+
+//  Future<String> loadFile(BuildContext context) async {
+//    return await DefaultAssetBundle.of(context)
+//        .loadString('assets/file.txt')
+//        .then((val) {
+//      print(val);
+//      return val;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
-
+    print(state);
 //    print(_f.toString());
 //    print("some");
 
@@ -360,4 +408,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
           );
   }
+}
+
+class Storage {
+
+  Future<String> get localPath async {
+    final dir = await getApplicationDocumentsDirectory();
+    return dir.path;
+  }
+
+  Future<File> get localFile async {
+    final path = await localPath;
+    return File('$path/file.txt');
+  }
+
+  Future<String> readData() async {
+    try {
+      final file = await localFile;
+      String body = await file.readAsString();
+
+      return body;
+    } catch (e) {
+      await writeData('');
+    }
+  }
+
+  Future<File> writeData(String data) async {
+    final file = await localFile;
+    return file.writeAsString('$data');
+  }
+
 }
