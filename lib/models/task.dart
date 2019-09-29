@@ -31,6 +31,10 @@ class Task {
     return DateFormat.yMd().format(date);
   }
 
+  static DateTime _getFormattedDate(String str) {
+    return DateFormat.yMd().parse(str);
+  }
+
   String dateFormatDayOfWeek(weekday) {
     return DateFormat.yMd().format(weekday).substring(0, 1);
   }
@@ -58,7 +62,7 @@ class Task {
         this.title = json['title'] ?? null,
         this.description = json['description'] ?? null,
         this.amount = json['amount'] ?? null,
-        this.date = json['date'],
+        this.date = _getFormattedDate(json['date']),
         this.flagDivider = json['flagDivider'],
         this.color = json['color'] ?? null
   ;
