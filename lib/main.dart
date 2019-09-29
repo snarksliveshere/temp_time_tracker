@@ -73,7 +73,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Task> _userTasks = [];
+  List<Task> _userTasks = [];
   String state;
   BuildContext ctx;
   bool _showChart = false;
@@ -82,8 +82,28 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    var objs;
+    try {
+      var l = json.decode(state);
+      objs = Task.decodeJsonToObject(l);
+    } catch (e) {
+      print(e.toString());
+    }
+    print("this state");
+
+    print('below there');
+    if (objs != null) {
+      print(objs[1].title);
+    }
+
+
     widget.storage.readData().then((String value) {
       setState(() {
+        if (value != '') {
+          var l = json.decode(value);
+          objs = Task.decodeJsonToObject(l);
+          _userTasks = objs;
+        }
         state = value;
       });
     });

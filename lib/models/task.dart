@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class Task {
   String id;
@@ -9,7 +9,7 @@ class Task {
   double amount;
   DateTime date;
   bool flagDivider;
-  var color;
+  Color color;
 
   Task({
     @required this.id,
@@ -35,6 +35,10 @@ class Task {
     return DateFormat.yMd().parse(str);
   }
 
+  static String _getHexFromColor(c) {
+    return '${c.value.toRadixString(16)}';
+  }
+
   String dateFormatDayOfWeek(weekday) {
     return DateFormat.yMd().format(weekday).substring(0, 1);
   }
@@ -54,7 +58,7 @@ class Task {
         '"amount"': this.amount,
         '"date"': _getJsonFormatString(this.getDateFormatDM(this.date)),
         '"flagDivider"': this.flagDivider,
-        '"color"': _getJsonFormatString(this.color)
+        '"color"': this.color != null ? _getJsonFormatString(_getHexFromColor(this.color)) : null
       };
 
   Task.fromJson(Map<String, dynamic> json)
@@ -64,7 +68,7 @@ class Task {
         this.amount = json['amount'] ?? null,
         this.date = _getFormattedDate(json['date']),
         this.flagDivider = json['flagDivider'],
-        this.color = json['color'] ?? null
+        this.color = json['color'] != null ? HexColor(json['color']) : null
   ;
 
   static List encodeToJson(List<Task>list){
@@ -82,5 +86,16 @@ class Task {
     ).toList();
     return taskList;
   }
+}
 
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
