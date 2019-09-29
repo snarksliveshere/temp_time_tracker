@@ -35,25 +35,32 @@ class Task {
     return DateFormat.yMd().format(weekday).substring(0, 1);
   }
 
+  String _getJsonFormatString(dynamic v) {
+    if (v == null) {
+      return null;
+    }
+    return '"$v"';
+  }
+
   Map<String, dynamic> toJson() =>
       {
-        'id': this.id,
-        'title': this.title,
-        'description': this.description,
-        'amount': this.amount,
-        'date': this.getDateFormatDM(this.date),
-        'flagDivider': this.flagDivider,
-        'color': this.color
+        '"id"': _getJsonFormatString(this.id),
+        '"title"': _getJsonFormatString(this.title),
+        '"description"': _getJsonFormatString(this.description),
+        '"amount"': this.amount,
+        '"date"': _getJsonFormatString(this.getDateFormatDM(this.date)),
+        '"flagDivider"': this.flagDivider,
+        '"color"': _getJsonFormatString(this.color)
       };
 
   Task.fromJson(Map<String, dynamic> json)
-      : this.id = json['id'],
-        this.title = json['title'],
-        this.description = json['description'],
-        this.amount = json['amount'],
+      : this.id = json['id'] ?? null,
+        this.title = json['title'] ?? null,
+        this.description = json['description'] ?? null,
+        this.amount = json['amount'] ?? null,
         this.date = json['date'],
         this.flagDivider = json['flagDivider'],
-        this.color = json['color']
+        this.color = json['color'] ?? null
   ;
 
   static List encodeToJson(List<Task>list){
@@ -63,4 +70,13 @@ class Task {
     ).toList();
     return jsonList;
   }
+
+  static List<Task> decodeJsonToObject(dynamic jsonList){
+    List<Task> taskList = [];
+    jsonList.map((item)=>
+        taskList.add(item.fromJson)
+    ).toList();
+    return taskList;
+  }
+
 }

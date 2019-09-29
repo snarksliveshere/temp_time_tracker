@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -128,6 +129,17 @@ class _MyHomePageState extends State<MyHomePage> {
 //    listTask.add(newTx);
 
     print(state);
+
+    try {
+      var l = json.decode(state);
+    } catch (e) {
+      print(e.toString());
+    }
+    print("this state");
+//    var objs =  Task.decodeJsonToObject(l);
+
+    print('below there');
+//    print(objs[0].title);
 
 
     setState(() {
