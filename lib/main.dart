@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -154,12 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
 //    print(date.toString());
     String dateFormat = DateFormat.yMd().format(date);
     int index = _userTasks.indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
-//    print(index);
+    print(index);
     // далее надо вытащить все данные листа до этого момента index
+    if (index == -1) {
+      return;
+    }
     List<Task> newUserTaskList = _userTasks.getRange(0, index).toList();
-//    print(newUserTaskList.length);
 
     if (newUserTaskList.length == 0) {
+      setState(() {
+        _scrollController.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+      });
       return;
     }
     List<Task> listOfDividers = newUserTaskList.where((el) => el.flagDivider).toList();
@@ -265,10 +271,28 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  var _f;
+  @override
+  void initState() {
+    super.initState();
+    _f = loadFile(context);
+
+  }
+
+  Future<String> loadFile(BuildContext context) async {
+    return await DefaultAssetBundle.of(context).loadString('assets/file.txt').then((val) {
+      print(val);
+      return val;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+
+//    print(_f.toString());
+//    print("some");
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
