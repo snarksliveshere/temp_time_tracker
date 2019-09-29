@@ -89,15 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //    _f = loadFile(context);
   }
 
-  Future<File> writeData() async {
-    setState(() {
-//      state = controller.text
-//      controller.text = ''
-      state = 'olal';
-    });
 
-    return widget.storage.writeData(state);
-  }
 
   List<Task> get _recentTasks {
     _userTasks.sort((a, b) {
@@ -132,19 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
         color: color);
 
     Map<String, dynamic> jsonString = newTx.toJson();
-    List<Task> listTask = _userTasks;
-    listTask.add(newTx);
+//    List<Task> listTask = _userTasks;
+//    listTask.add(newTx);
 
-    List jsonL = Task.encodeToJson(listTask);
-    print('$jsonL');
-
-//    List<String> listJson;
-//
-//    for (Task t in listTask) {
-//      listJson.add(t.toJson().toString());
-//    }
-
-
+    print(state);
 
 
     setState(() {
@@ -152,9 +135,23 @@ class _MyHomePageState extends State<MyHomePage> {
         _userTasks.add(headerDivider);
       }
       _userTasks.add(newTx);
+      List jsonL = Task.encodeToJson(_userTasks);
 //      _userTasks = listTask;
-      widget.storage.writeData(jsonString.toString());
+      _writeData(jsonL.toString());
+//      state = '$jsonL';
+//      widget.storage.writeData('$jsonL');
+
     });
+
+
+  }
+
+  Future<File> _writeData(data) async {
+    setState(() {
+      state = data;
+    });
+
+    return widget.storage.writeData(state);
   }
 
   void _deleteTask(String id) {
