@@ -82,15 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    widget.storage.readData().then((String value){
+    widget.storage.readData().then((String value) {
       setState(() {
         state = value;
       });
     });
 //    _f = loadFile(context);
   }
-
-
 
   List<Task> get _recentTasks {
     _userTasks.sort((a, b) {
@@ -130,17 +128,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
     print(state);
 
+    var objs;
     try {
       var l = json.decode(state);
+      objs = Task.decodeJsonToObject(l);
     } catch (e) {
       print(e.toString());
     }
     print("this state");
-//    var objs =  Task.decodeJsonToObject(l);
 
     print('below there');
-//    print(objs[0].title);
-
+    if (objs != null) {
+      print(objs[0].title);
+    }
 
     setState(() {
       if (compare.isEmpty) {
@@ -152,10 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _writeData(jsonL.toString());
 //      state = '$jsonL';
 //      widget.storage.writeData('$jsonL');
-
     });
-
-
   }
 
   Future<File> _writeData(data) async {
@@ -330,10 +327,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-
-
-
-
 //  Future<String> loadFile(BuildContext context) async {
 //    return await DefaultAssetBundle.of(context)
 //        .loadString('assets/file.txt')
@@ -420,7 +413,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class Storage {
-
   Future<String> get localPath async {
     final dir = await getApplicationDocumentsDirectory();
     return dir.path;
@@ -446,5 +438,4 @@ class Storage {
     final file = await localFile;
     return file.writeAsString('$data');
   }
-
 }

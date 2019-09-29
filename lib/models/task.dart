@@ -74,7 +74,7 @@ class Task {
   static List<Task> decodeJsonToObject(dynamic jsonList){
     List<Task> taskList = [];
     jsonList.map((item)=>
-        taskList.add(item.fromJson)
+        taskList.add(Task.fromJson(item))
     ).toList();
     return taskList;
   }
