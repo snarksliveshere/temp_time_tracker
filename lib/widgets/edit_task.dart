@@ -272,5 +272,5 @@ class _EditTaskState extends State<EditTask> {
   }
 
   ColorSwatch _tempMainColor;
-  ColorSwatch _mainColor = Colors.blue;
+  dynamic _mainColor = Colors.blue;
 }

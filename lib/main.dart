@@ -270,6 +270,8 @@ class _MyHomePageState extends State<MyHomePage> {
       if (tasks.length <= 1) {
         _userTasks.removeWhere((el) => el.date == _editingTaskDatetime);
       }
+      List jsonL = Task.encodeToJson(_userTasks);
+      _writeData(jsonL.toString());
     });
   }
 
