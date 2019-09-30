@@ -30,7 +30,7 @@ class TaskList extends StatelessWidget {
                     Container(
                         height: constraint.maxHeight * 0.6,
                         child: Image.asset(
-                          'assets/images/waiting.png',
+                          'assets/images/towelie.png',
                           fit: BoxFit.cover,
                         )),
                   ],
