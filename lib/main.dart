@@ -96,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
       print(objs[1].title);
     }
 
-
     widget.storage.readData().then((String value) {
       setState(() {
         if (value != '') {
@@ -134,33 +133,14 @@ class _MyHomePageState extends State<MyHomePage> {
       flagDivider: true,
     );
     final Task newTx = Task(
-        title: txTitle,
-        description: txDescription,
-        amount: txAmount,
-        date: chosenDate,
-        id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
-        flagDivider: false,
-        color: color);
-
-    Map<String, dynamic> jsonString = newTx.toJson();
-//    List<Task> listTask = _userTasks;
-//    listTask.add(newTx);
-
-    print(state);
-
-    var objs;
-    try {
-      var l = json.decode(state);
-      objs = Task.decodeJsonToObject(l);
-    } catch (e) {
-      print(e.toString());
-    }
-    print("this state");
-
-    print('below there');
-    if (objs != null) {
-      print(objs[1].title);
-    }
+      title: txTitle,
+      description: txDescription,
+      amount: txAmount,
+      date: chosenDate,
+      id: '${DateTime.now().toString()}_${rand.nextInt(1000)}',
+      flagDivider: false,
+      color: color,
+    );
 
     setState(() {
       if (compare.isEmpty) {
@@ -194,6 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
       } else {
         _userTasks.removeWhere((el) => el.id == id);
       }
+      List jsonL = Task.encodeToJson(_userTasks);
+      _writeData(jsonL.toString());
     });
   }
 
