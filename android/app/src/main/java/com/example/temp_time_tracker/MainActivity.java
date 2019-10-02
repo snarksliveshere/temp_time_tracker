@@ -1,4 +1,4 @@
-package com.example.temp_time_tracker;
+package xyz.snarksliveshere.temp_time_tracker;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
