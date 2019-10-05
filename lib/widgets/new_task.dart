@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../config/config_main.dart';
 import '../config/texts.dart';
 import './adaptive_flat_button.dart';
+import './date_picker.dart';
+import './color_picker.dart';
+import 'task_form.dart';
 
 class NewTask extends StatefulWidget {
   final Function addTx;
@@ -21,6 +23,8 @@ class _NewTaskState extends State<NewTask> {
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
   DateTime _selectedDate;
+  ColorSwatch _tempMainColor;
+  ColorSwatch _mainColor = ConfigMain.appPrimaryColor;
 
   _checkValid() {
     if (_amountController.text.isNotEmpty &&
@@ -48,15 +52,8 @@ class _NewTaskState extends State<NewTask> {
     Navigator.of(context).pop();
   }
 
-  void _presentDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now().subtract(
-              Duration(days: 30),
-            ),
-            lastDate: DateTime.now())
-        .then((val) {
+  void _presentDatePicker(BuildContext context) {
+    DatePicker.returnDatePicker(context, ConfigMain.numOfDays).then((val) {
       if (val == null) {
         return;
       }
@@ -66,71 +63,30 @@ class _NewTaskState extends State<NewTask> {
     });
   }
 
-  Widget getLandscapeMode() {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          flex: 10,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Title',
-              errorText: _titleController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _titleController,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) {
-            //   titleInput = val;
-            // },
-          ),
-        ),
-        VerticalDivider(),
-        Flexible(
-          flex: 2,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              errorText: _amountController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) => amountInput = val,
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> getPortraitMode() {
-    return [
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Title',
-          errorText: _titleController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _titleController,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) {
-        //   titleInput = val;
-        // },
-      ),
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Amount (hours)',
-          errorText: _amountController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _amountController,
-        keyboardType: TextInputType.number,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) => amountInput = val,
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+    ColorPicker colorPicker = ColorPicker(
+      cancelFx: () => Navigator.of(context).pop(),
+      context: context,
+      mainColor: _mainColor,
+      tempColor: _tempMainColor,
+      onColorChange: (color) => setState(() => _tempMainColor = color),
+      submitFx: () {
+        setState(() => _mainColor = _tempMainColor);
+        Navigator.of(context).pop();
+      },
+    );
+
+    TaskForm taskForm = TaskForm(
+      titleController: _titleController,
+      amountController: _amountController,
+      descriptionController: _descriptionController,
+      submitFx: _submitData,
+      isLandscape: isLandscape,
+    );
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -144,18 +100,9 @@ class _NewTaskState extends State<NewTask> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              if (isLandscape) getLandscapeMode(),
-              if (!isLandscape) ...getPortraitMode(),
-              TextField(
-                decoration: InputDecoration(labelText: 'Description'),
-                controller: _descriptionController,
-                onSubmitted: (_) => _submitData(),
-                // onChanged: (val) {
-                //   titleInput = val;
-                // },
-              ),
+              ...taskForm.getForm,
               Container(
-                height: 70.0,
+                height: ConfigMain.taskUnderForm,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -163,7 +110,7 @@ class _NewTaskState extends State<NewTask> {
                       flex: 3,
                       child: AdaptiveFlatButton(
                         text: Texts.chooseDate,
-                        handler: _presentDatePicker,
+                        handler: () => _presentDatePicker(context),
                       ),
                     ),
                     Flexible(
@@ -175,14 +122,15 @@ class _NewTaskState extends State<NewTask> {
                                   color: Theme.of(context).errorColor),
                             )
                           : Text(
-                              'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                              Texts.pickedDate +
+                                  ' ${DateFormat.yMd().format(_selectedDate)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                     ),
                     VerticalDivider(
-                      width: 20.0,
+                      width: ConfigMain.taskVerticalDivider,
                     ),
                     Flexible(
                       flex: 3,
@@ -191,7 +139,7 @@ class _NewTaskState extends State<NewTask> {
                         child: AdaptiveFlatButton(
                           text: Texts.chooseColor,
                           color: ConfigMain.appWhite,
-                          handler: _openMainColorPicker,
+                          handler: colorPicker.openMainColorPicker,
                         ),
                       ),
                     ),
@@ -210,38 +158,4 @@ class _NewTaskState extends State<NewTask> {
       ),
     );
   }
-
-  void _openColorPickerDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(ConfigMain.smallSpace),
-          title: Text(title),
-          content: content,
-          actions: [
-            AdaptiveFlatButton.cancel(() => Navigator.of(context).pop()),
-            AdaptiveFlatButton.submit(() {
-              setState(() => _mainColor = _tempMainColor);
-              Navigator.of(context).pop();
-            }),
-          ],
-        );
-      },
-    );
-  }
-
-  void _openMainColorPicker() async {
-    _openColorPickerDialog(
-      Texts.colorPickerTitle,
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        allowShades: false,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
-  }
-
-  ColorSwatch _tempMainColor;
-  ColorSwatch _mainColor = Colors.blue;
 }

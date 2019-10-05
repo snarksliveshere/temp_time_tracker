@@ -18,9 +18,9 @@ class Texts {
   static const String editTask = 'Edit Task';
 
 
-  static const String newTaskTitle = 'Title';
-  static const String newTaskAmount = 'Amount (hours)';
-  static const String newTaskDescription = 'Description';
+  static const String taskTitle = 'Title';
+  static const String taskAmount = 'Amount (hours)';
+  static const String taskDescription = 'Description';
   static const String requiredField = 'required';
 
   static const String colorPickerTitle = 'Color Picker';

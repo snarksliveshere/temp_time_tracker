@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 class ConfigMain {
   // logic
   static const int numOfHours = 8;
+  static const int numOfDays = 30;
 
   // appearance
   static const String noTaskImage = 'assets/images/towelie.png';
@@ -13,6 +14,12 @@ class ConfigMain {
   static const double middleSpace = 10.0;
   static const double smallSpace = 5.0;
   static const double tinySpace = 1.0;
+
+
+  // new & edit task
+  static const double taskUnderForm = 70.0;
+  static const double taskVerticalDivider = 20.0;
+
 
   // border
   static const double fatBorder = 3.0;

@@ -73,7 +73,7 @@ class Chart extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: ScrollController(
-        initialScrollOffset: 1000.0
+        initialScrollOffset: 1055.0
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
