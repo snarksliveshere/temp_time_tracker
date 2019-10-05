@@ -35,10 +35,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           accentColor: Colors.deepOrange,
           errorColor: Colors.red,
-          fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
-                  fontFamily: 'OpenSans',
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
@@ -48,11 +46,14 @@ class MyApp extends StatelessWidget {
                 subhead: TextStyle(
                   fontSize: 14,
                 ),
+                subtitle: TextStyle(
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w300
+                )
               ),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
                   title: TextStyle(
-                    fontFamily: 'OpenSans',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),

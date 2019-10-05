@@ -8,7 +8,8 @@ class ChartBar extends StatelessWidget {
   final double spendingAmount;
   final double spendingPctOfTotal;
 
-  const ChartBar(this.date, this.label, this.spendingAmount, this.spendingPctOfTotal);
+  const ChartBar(
+      this.date, this.label, this.spendingAmount, this.spendingPctOfTotal);
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +18,29 @@ class ChartBar extends StatelessWidget {
         children: <Widget>[
           Container(
             child: FittedBox(
-              child: Text(date),
+              child: Text(date, style: TextStyle(fontWeight: FontWeight.bold),),
             ),
             height: constraint.maxHeight * 0.10,
+            decoration: BoxDecoration(
+              border: Border.all(color: ConfigMain.appGrey, style: BorderStyle.solid, width: ConfigMain.thinBorder)
+            ),
+          ),
+          SizedBox(
+            height: constraint.maxHeight * 0.025,
           ),
           Container(
             height: constraint.maxHeight * 0.15,
             child: FittedBox(
-              child: Text(spendingAmount == 0
-                  ? '0'
-                  : '${spendingAmount.toStringAsFixed(2)}'
+              child: Text(
+                spendingAmount == 0
+                    ? '0'
+                    : '${spendingAmount.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.subtitle,
               ),
             ),
           ),
           SizedBox(
-            height: constraint.maxHeight * 0.05,
+            height: constraint.maxHeight * 0.025,
           ),
           Container(
             height: constraint.maxHeight * 0.5,
@@ -40,9 +49,12 @@ class ChartBar extends StatelessWidget {
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: ConfigMain.appGrey, width: ConfigMain.thinBorder),
+                    border: Border.all(
+                        color: ConfigMain.appGrey,
+                        width: ConfigMain.thinBorder),
                     color: ConfigMain.appLightGrey,
-                    borderRadius: BorderRadius.circular(ConfigMain.middleRadius),
+                    borderRadius:
+                        BorderRadius.circular(ConfigMain.middleRadius),
                   ),
                 ),
                 FractionallySizedBox(
@@ -52,7 +64,8 @@ class ChartBar extends StatelessWidget {
                       color: this.spendingAmount > ConfigMain.numOfHours
                           ? ConfigMain.appGreen
                           : Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(ConfigMain.middleRadius),
+                      borderRadius:
+                          BorderRadius.circular(ConfigMain.middleRadius),
                     ),
                   ),
                 ),
