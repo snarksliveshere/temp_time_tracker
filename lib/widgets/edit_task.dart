@@ -16,8 +16,8 @@ class EditTask extends StatefulWidget {
   DateTime date;
   var color;
 
-  EditTask(this.id, this.title, this.description, this.amount, this.date,
-      this.color, this.editTx);
+  EditTask({this.id, this.title, this.description, this.amount, this.date,
+      this.color, this.editTx});
 
   @override
   _EditTaskState createState() => _EditTaskState();

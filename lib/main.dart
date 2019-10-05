@@ -195,8 +195,15 @@ class _MyHomePageState extends State<MyHomePage> {
       context: ctx,
       isScrollControlled: true,
       builder: (_) {
-        return EditTask(task.id, task.title, task.description, task.amount,
-            task.date, task.color, _saveTask);
+        return EditTask(
+          id: task.id,
+            title: task.title,
+            description: task.description,
+            amount: task.amount,
+            date: task.date,
+            color: task.color,
+            editTx: _saveTask
+        );
       },
     );
   }

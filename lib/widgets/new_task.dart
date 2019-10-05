@@ -6,6 +6,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import '../config/config_main.dart';
 import '../config/texts.dart';
 import './adaptive_flat_button.dart';
+import './date_picker.dart';
 
 class NewTask extends StatefulWidget {
   final Function addTx;
@@ -48,15 +49,8 @@ class _NewTaskState extends State<NewTask> {
     Navigator.of(context).pop();
   }
 
-  void _presentDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now().subtract(
-              Duration(days: 30),
-            ),
-            lastDate: DateTime.now())
-        .then((val) {
+  void _presentDatePicker(BuildContext context) {
+    DatePicker.returnDatePicker(context).then((val) {
       if (val == null) {
         return;
       }
@@ -163,7 +157,7 @@ class _NewTaskState extends State<NewTask> {
                       flex: 3,
                       child: AdaptiveFlatButton(
                         text: Texts.chooseDate,
-                        handler: _presentDatePicker,
+                        handler: () => _presentDatePicker(context),
                       ),
                     ),
                     Flexible(
