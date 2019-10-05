@@ -18,18 +18,25 @@ class ChartBar extends StatelessWidget {
         children: <Widget>[
           Container(
             child: FittedBox(
-              child: Text(date, style: TextStyle(fontWeight: FontWeight.bold),),
+              child: Text(
+                date,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
-            height: constraint.maxHeight * 0.10,
+            height: constraint.maxHeight * 0.135,
             decoration: BoxDecoration(
-              border: Border.all(color: ConfigMain.appGrey, style: BorderStyle.solid, width: ConfigMain.thinBorder)
-            ),
+                border: Border.all(
+              color: ConfigMain.appLightGrey,
+              style: BorderStyle.solid,
+              width: ConfigMain.thinBorder,
+            )),
+            padding: EdgeInsets.all(ConfigMain.tinySpace),
           ),
           SizedBox(
-            height: constraint.maxHeight * 0.025,
+            height: constraint.maxHeight * 0.05,
           ),
           Container(
-            height: constraint.maxHeight * 0.15,
+            height: constraint.maxHeight * 0.125,
             child: FittedBox(
               child: Text(
                 spendingAmount == 0
@@ -43,7 +50,7 @@ class ChartBar extends StatelessWidget {
             height: constraint.maxHeight * 0.025,
           ),
           Container(
-            height: constraint.maxHeight * 0.5,
+            height: constraint.maxHeight * 0.49,
             width: ConfigMain.middleSpace,
             child: Stack(
               children: <Widget>[
@@ -77,9 +84,9 @@ class ChartBar extends StatelessWidget {
           ),
           Container(
             child: FittedBox(
-              child: Text(label),
+              child: Text(label, style: TextStyle(fontWeight: FontWeight.bold),),
             ),
-            height: constraint.maxHeight * 0.15,
+            height: constraint.maxHeight * 0.125,
           ),
         ],
       );

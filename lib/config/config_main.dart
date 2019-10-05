@@ -12,6 +12,7 @@ class ConfigMain {
   static const double bigSpace = 20.0;
   static const double middleSpace = 10.0;
   static const double smallSpace = 5.0;
+  static const double tinySpace = 1.0;
 
   // border
   static const double fatBorder = 3.0;
