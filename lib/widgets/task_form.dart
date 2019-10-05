@@ -10,11 +10,11 @@ class TaskForm {
   final Function submitFx;
 
   TaskForm({
-    this.isLandscape,
-    this.titleController,
-    this.amountController,
-    this.descriptionController,
-    this.submitFx,
+    @required this.isLandscape,
+    @required this.titleController,
+    @required this.amountController,
+    @required this.descriptionController,
+    @required this.submitFx,
   });
 
   List<Widget> get getForm {

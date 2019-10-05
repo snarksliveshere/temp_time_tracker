@@ -102,7 +102,7 @@ class _NewTaskState extends State<NewTask> {
             children: <Widget>[
               ...taskForm.getForm,
               Container(
-                height: 70.0,
+                height: ConfigMain.taskUnderForm,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -122,14 +122,15 @@ class _NewTaskState extends State<NewTask> {
                                   color: Theme.of(context).errorColor),
                             )
                           : Text(
-                              'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                              Texts.pickedDate +
+                                  ' ${DateFormat.yMd().format(_selectedDate)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                     ),
                     VerticalDivider(
-                      width: 20.0,
+                      width: ConfigMain.taskVerticalDivider,
                     ),
                     Flexible(
                       flex: 3,
