@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 class ConfigMain {
   // logic
   static const int numOfHours = 8;
+  static const int numOfDays = 30;
 
   // appearance
   static const String noTaskImage = 'assets/images/towelie.png';

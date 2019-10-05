@@ -7,6 +7,7 @@ import '../config/config_main.dart';
 import '../config/texts.dart';
 import './adaptive_flat_button.dart';
 import './date_picker.dart';
+import './color_picker.dart';
 
 class NewTask extends StatefulWidget {
   final Function addTx;
@@ -22,6 +23,8 @@ class _NewTaskState extends State<NewTask> {
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
   DateTime _selectedDate;
+  ColorSwatch _tempMainColor;
+  ColorSwatch _mainColor = ConfigMain.appPrimaryColor;
 
   _checkValid() {
     if (_amountController.text.isNotEmpty &&
@@ -50,7 +53,7 @@ class _NewTaskState extends State<NewTask> {
   }
 
   void _presentDatePicker(BuildContext context) {
-    DatePicker.returnDatePicker(context).then((val) {
+    DatePicker.returnDatePicker(context, ConfigMain.numOfDays).then((val) {
       if (val == null) {
         return;
       }
@@ -115,14 +118,23 @@ class _NewTaskState extends State<NewTask> {
         ),
         controller: _amountController,
         keyboardType: TextInputType.number,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) => amountInput = val,
       ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
+    ColorPicker colorPicker = ColorPicker(
+      cancelFx: () => Navigator.of(context).pop(),
+      context: context,
+      mainColor: _mainColor,
+      tempColor: _tempMainColor,
+      onColorChange: (color) => setState(() => _tempMainColor = color),
+      submitFx: () {
+        setState(() => _mainColor = _tempMainColor);
+        Navigator.of(context).pop();
+      },
+    );
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
     return SingleChildScrollView(
@@ -185,7 +197,7 @@ class _NewTaskState extends State<NewTask> {
                         child: AdaptiveFlatButton(
                           text: Texts.chooseColor,
                           color: ConfigMain.appWhite,
-                          handler: _openMainColorPicker,
+                          handler: colorPicker.openMainColorPicker,
                         ),
                       ),
                     ),
@@ -204,38 +216,4 @@ class _NewTaskState extends State<NewTask> {
       ),
     );
   }
-
-  void _openColorPickerDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(ConfigMain.smallSpace),
-          title: Text(title),
-          content: content,
-          actions: [
-            AdaptiveFlatButton.cancel(() => Navigator.of(context).pop()),
-            AdaptiveFlatButton.submit(() {
-              setState(() => _mainColor = _tempMainColor);
-              Navigator.of(context).pop();
-            }),
-          ],
-        );
-      },
-    );
-  }
-
-  void _openMainColorPicker() async {
-    _openColorPickerDialog(
-      Texts.colorPickerTitle,
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        allowShades: false,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
-  }
-
-  ColorSwatch _tempMainColor;
-  ColorSwatch _mainColor = Colors.blue;
 }
