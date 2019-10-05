@@ -20,6 +20,9 @@ class ConfigMain {
   static const double thinBorder = 1.0;
 
   //colors
+  static const Color appPrimaryColor = Colors.blue;
+  static const Color appAccentColor = Colors.deepOrange;
+  static const Color appErrorColor = Colors.red;
   static const Color appGreen = Colors.green;
   static const Color appWhite = Colors.white;
   static const Color appBlack = Colors.black;

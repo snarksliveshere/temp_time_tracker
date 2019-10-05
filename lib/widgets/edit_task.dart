@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
+import '../config/texts.dart';
+import '../config/config_main.dart';
 import './adaptive_flat_button.dart';
 
 class EditTask extends StatefulWidget {
@@ -181,13 +183,16 @@ class _EditTaskState extends State<EditTask> {
                     Flexible(
                       flex: 3,
                       child:
-                          AdaptiveFlatButton('Choose date', _presentDatePicker),
+                        AdaptiveFlatButton(
+                          text: Texts.chooseDate,
+                          handler: _presentDatePicker,
+                        )
                     ),
                     Flexible(
                       flex: 3,
                       child: _selectedDate == null
                           ? Text(
-                              'No Date Chosen1',
+                        Texts.noDateChosen,
                               style: TextStyle(
                                   color: Theme.of(context).errorColor),
                             )
@@ -205,10 +210,10 @@ class _EditTaskState extends State<EditTask> {
                       flex: 3,
                       child: Container(
                         color: _mainColor,
-                        child: AdaptiveFlatButton.colorText(
-                          'Choose color',
-                          _openMainColorPicker,
-                          Colors.white,
+                        child: AdaptiveFlatButton(
+                          text: Texts.chooseColor,
+                          color: ConfigMain.appWhite,
+                          handler: _openMainColorPicker,
                         ),
                       ),
                     ),

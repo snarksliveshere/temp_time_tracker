@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
+import '../config/config_main.dart';
+import '../config/texts.dart';
 import './adaptive_flat_button.dart';
 
 class NewTask extends StatefulWidget {
@@ -159,14 +161,16 @@ class _NewTaskState extends State<NewTask> {
                   children: <Widget>[
                     Flexible(
                       flex: 3,
-                      child:
-                          AdaptiveFlatButton('Choose date', _presentDatePicker),
+                      child: AdaptiveFlatButton(
+                        text: Texts.chooseDate,
+                        handler: _presentDatePicker,
+                      ),
                     ),
                     Flexible(
                       flex: 3,
                       child: _selectedDate == null
                           ? Text(
-                              'No Date Chosen1',
+                              Texts.noDateChosen,
                               style: TextStyle(
                                   color: Theme.of(context).errorColor),
                             )
@@ -184,10 +188,10 @@ class _NewTaskState extends State<NewTask> {
                       flex: 3,
                       child: Container(
                         color: _mainColor,
-                        child: AdaptiveFlatButton.colorText(
-                          'Choose color',
-                          _openMainColorPicker,
-                          Colors.white,
+                        child: AdaptiveFlatButton(
+                          text: Texts.chooseColor,
+                          color: ConfigMain.appWhite,
+                          handler: _openMainColorPicker,
                         ),
                       ),
                     ),
@@ -196,7 +200,7 @@ class _NewTaskState extends State<NewTask> {
               ),
               RaisedButton(
                 color: Theme.of(context).primaryColorDark,
-                child: Text('Add Task'),
+                child: const Text(Texts.addTask),
                 textColor: Theme.of(context).textTheme.button.color,
                 onPressed: _checkValid(),
               ),
@@ -207,32 +211,20 @@ class _NewTaskState extends State<NewTask> {
     );
   }
 
-  void _openDialog(String title, Widget content) {
+  void _openColorPickerDialog(String title, Widget content) {
     showDialog(
       context: context,
       builder: (_) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
+          contentPadding: const EdgeInsets.all(ConfigMain.smallSpace),
           title: Text(title),
           content: content,
           actions: [
-            FlatButton(
-              child: Text(
-                'CANCEL',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              onPressed: Navigator.of(context).pop,
-            ),
-            FlatButton(
-              child: Text(
-                'SUBMIT',
-                style: TextStyle(color: Colors.green),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
-              },
-            ),
+            AdaptiveFlatButton.cancel(() => Navigator.of(context).pop()),
+            AdaptiveFlatButton.submit(() {
+              setState(() => _mainColor = _tempMainColor);
+              Navigator.of(context).pop();
+            }),
           ],
         );
       },
@@ -240,8 +232,8 @@ class _NewTaskState extends State<NewTask> {
   }
 
   void _openMainColorPicker() async {
-    _openDialog(
-      "Main Color picker",
+    _openColorPickerDialog(
+      Texts.colorPickerTitle,
       MaterialColorPicker(
         selectedColor: _mainColor,
         allowShades: false,

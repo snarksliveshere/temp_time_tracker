@@ -3,38 +3,56 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../config/config_main.dart';
+import '../config/texts.dart';
+
 class AdaptiveFlatButton extends StatelessWidget {
-  final String _text;
-  Color _color;
+  String text;
+  Color color;
+  final Function handler;
 
-  final Function _handler;
+  AdaptiveFlatButton({this.text, this.color, this.handler});
 
-  AdaptiveFlatButton(this._text, this._handler);
-  AdaptiveFlatButton.colorText(this._text, this._handler, this._color);
+  AdaptiveFlatButton.cancel(this.handler) {
+    this.color = ConfigMain.appPrimaryColor;
+    this.text = Texts.buttonCancel;
+  }
+
+  AdaptiveFlatButton.delete(this.handler) {
+    this.color = ConfigMain.appErrorColor;
+    this.text = Texts.buttonDelete;
+  }
+
+  AdaptiveFlatButton.submit(this.handler) {
+    this.color = ConfigMain.appGreen;
+    this.text = Texts.buttonSubmit;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoButton(
-            onPressed: _handler,
+            onPressed: handler,
             child: Text(
-              _text,
+              text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
           )
         : FlatButton(
-            textColor: _color != null
-                ? _color
+            textColor: color != null
+                ? color
                 : Theme.of(context).primaryColorDark,
-            onPressed: _handler,
+            onPressed: handler,
             child: Text(
-              _text,
+              text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
           );
   }
+
 }

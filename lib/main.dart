@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
       title: Texts.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          accentColor: Colors.deepOrange,
-          errorColor: Colors.red,
+          primarySwatch: ConfigMain.appPrimaryColor,
+          accentColor: ConfigMain.appAccentColor,
+          errorColor: ConfigMain.appErrorColor,
           textTheme: ThemeData.light().textTheme.copyWith(
                 title: TextStyle(
                   fontWeight: FontWeight.bold,
