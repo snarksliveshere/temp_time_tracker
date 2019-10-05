@@ -24,15 +24,17 @@ class TaskItem extends StatelessWidget {
     return task.flagDivider
         ? Container(
             width: double.infinity,
-            margin: EdgeInsets.only(top: bigSpace, left: bigSpace, right: bigSpace),
+            margin:
+                EdgeInsets.only(top: bigSpace, left: bigSpace, right: bigSpace),
             padding: EdgeInsets.only(bottom: ConfigMain.smallSpace),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    color: Theme.of(context).primaryColorLight,
-                    width: ConfigMain.thinBorder,
-                    style: BorderStyle.solid),
+                  color: Theme.of(context).primaryColorLight,
+                  width: ConfigMain.thinBorder,
+                  style: BorderStyle.solid,
+                ),
               ),
             ),
             child: Text(

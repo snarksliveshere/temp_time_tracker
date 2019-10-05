@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 
 //import 'package:flutter/services.dart'; // SystemChrome
 import './config/texts.dart';
+import './config/config_main.dart';
 import './widgets/new_task.dart';
 import './widgets/edit_task.dart';
 import './widgets/task_list.dart';
@@ -180,13 +181,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-//  void _editTask(String id) {
-//    setState(() {
-//      Task task = _userTasks.firstWhere((el) => el.id == id);
-//      task.title = 'new';
-//    });
-//  }
-
   void _editTask(String id) {
     _startEditTask(context, id);
   }
@@ -332,22 +326,10 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
-//  Future<String> loadFile(BuildContext context) async {
-//    return await DefaultAssetBundle.of(context)
-//        .loadString('assets/file.txt')
-//        .then((val) {
-//      print(val);
-//      return val;
-//    });
-//  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
-    print(state);
-//    print(_f.toString());
-//    print("some");
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
@@ -369,10 +351,17 @@ class _MyHomePageState extends State<MyHomePage> {
               Texts.appName,
             ),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () => _startAddNewTask(context),
+              CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColorLight,
+                child: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () => _startAddNewTask(context),
+                ),
               ),
+              SizedBox(
+                width: ConfigMain.middleSpace,
+              ),
+
             ],
           );
 
@@ -405,14 +394,6 @@ class _MyHomePageState extends State<MyHomePage> {
         : Scaffold(
             appBar: appBar,
             body: pageBody,
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: Platform.isIOS
-                ? Container()
-                : FloatingActionButton(
-                    child: Icon(Icons.add),
-                    onPressed: () => _startAddNewTask(context),
-                  ),
           );
   }
 }
