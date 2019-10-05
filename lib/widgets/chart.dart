@@ -52,9 +52,9 @@ class Chart extends StatelessWidget {
     _mediaQuery = MediaQuery.of(context);
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(ConfigMain.smallPadding),
+      margin: EdgeInsets.all(ConfigMain.middleSpace),
       child: Padding(
-        padding: EdgeInsets.all(ConfigMain.smallPadding),
+        padding: EdgeInsets.all(ConfigMain.middleSpace),
         child:  _getRowContainerChart(),
       ),
     );
@@ -85,7 +85,7 @@ class Chart extends StatelessWidget {
   }
 
   List<Widget> _getContainerChart() {
-    double width = _mediaQuery.size.width - (ConfigMain.smallPadding * 4);
+    double width = _mediaQuery.size.width - (ConfigMain.middleSpace * 4);
     return groupedTaskValues.map((data) {
       return GestureDetector(
         onTap: () {

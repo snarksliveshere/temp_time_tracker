@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
+import '../config/config_main.dart';
+import '../config/texts.dart';
 import '../models/task.dart';
 
 class TaskItem extends StatelessWidget {
@@ -21,18 +23,19 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey containerKey = GlobalKey();
+    const double bigSpace = ConfigMain.bigSpace;
     return task.flagDivider
         ? Container(
             key: containerKey,
             width: double.infinity,
-            margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-            padding: EdgeInsets.only(bottom: 5.0),
+            margin: EdgeInsets.only(top: bigSpace, left: bigSpace, right: bigSpace),
+            padding: EdgeInsets.only(bottom: ConfigMain.smallSpace),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                     color: Theme.of(context).primaryColorLight,
-                    width: 1.0,
+                    width: ConfigMain.thinBorder,
                     style: BorderStyle.solid),
               ),
             ),
@@ -52,7 +55,7 @@ class TaskItem extends StatelessWidget {
             child: Container(
               width: double.infinity,
               key: containerKey,
-              padding: EdgeInsets.all(5.0),
+              padding: EdgeInsets.all(ConfigMain.smallSpace),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -62,7 +65,7 @@ class TaskItem extends StatelessWidget {
                       backgroundColor: task.color,
                       radius: 30.0,
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(ConfigMain.smallSpace),
                         child: FittedBox(
                           child: Text(
                             '${task.amount.toStringAsFixed(2)} H',
@@ -87,7 +90,7 @@ class TaskItem extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Flexible(
-                              flex: 8,
+                              flex: 7,
                               child: Text(
                                 task.description,
                                 style: Theme.of(context).textTheme.subhead,
@@ -97,11 +100,11 @@ class TaskItem extends StatelessWidget {
                             ),
                             if (task.description != '')
                               Flexible(
-                                flex: 2,
+                                flex: 3,
                                 child: Tooltip(
                                   message: task.description,
                                   child: Text(
-                                    ' more',
+                                    Texts.descriptionMore,
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
                                         fontSize: 14.0),

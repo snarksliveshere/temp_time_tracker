@@ -351,8 +351,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text(
-              'Temp Time Tracker',
+            middle: const Text(
+              Texts.appName,
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -365,8 +365,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )
         : AppBar(
-            title: Text(
-              'Temp Time Tracker',
+            title: const Text(
+              Texts.appName,
             ),
             actions: <Widget>[
               IconButton(
