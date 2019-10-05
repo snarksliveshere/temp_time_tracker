@@ -6,6 +6,8 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 import '../config/texts.dart';
 import '../config/config_main.dart';
 import './adaptive_flat_button.dart';
+import './task_form.dart';
+import './color_picker.dart';
 
 class EditTask extends StatefulWidget {
   Function editTx;
@@ -27,6 +29,8 @@ class _EditTaskState extends State<EditTask> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
+  ColorSwatch _tempMainColor;
+  dynamic _mainColor = Colors.blue;
   String _id;
   DateTime _selectedDate;
 
@@ -85,71 +89,28 @@ class _EditTaskState extends State<EditTask> {
     });
   }
 
-  Widget getLandscapeMode() {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          flex: 10,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Title',
-              errorText: _titleController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _titleController,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) {
-            //   titleInput = val;
-            // },
-          ),
-        ),
-        VerticalDivider(),
-        Flexible(
-          flex: 2,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              errorText: _amountController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) => amountInput = val,
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> getPortraitMode() {
-    return [
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Title',
-          errorText: _titleController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _titleController,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) {
-        //   titleInput = val;
-        // },
-      ),
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Amount',
-          errorText: _amountController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _amountController,
-        keyboardType: TextInputType.number,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) => amountInput = val,
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+    TaskForm taskForm = TaskForm(
+      titleController: _titleController,
+      amountController: _amountController,
+      descriptionController: _descriptionController,
+      submitFx: _submitData,
+      isLandscape: isLandscape,
+    );
+    ColorPicker colorPicker = ColorPicker(
+      cancelFx: () => Navigator.of(context).pop(),
+      context: context,
+      mainColor: _mainColor,
+      tempColor: _tempMainColor,
+      onColorChange: (color) => setState(() => _tempMainColor = color),
+      submitFx: () {
+        setState(() => _mainColor = _tempMainColor);
+        Navigator.of(context).pop();
+      },
+    );
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -163,13 +124,7 @@ class _EditTaskState extends State<EditTask> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              if (isLandscape) getLandscapeMode(),
-              if (!isLandscape) ...getPortraitMode(),
-              TextField(
-                decoration: InputDecoration(labelText: Texts.taskDescription),
-                controller: _descriptionController,
-                onSubmitted: (_) => _submitData(),
-              ),
+              ...taskForm.getForm,
               Container(
                 height: 70.0,
                 child: Row(
@@ -207,7 +162,7 @@ class _EditTaskState extends State<EditTask> {
                         child: AdaptiveFlatButton(
                           text: Texts.chooseColor,
                           color: ConfigMain.appWhite,
-                          handler: _openMainColorPicker,
+                          handler: colorPicker.openMainColorPicker,
                         ),
                       ),
                     ),
@@ -226,50 +181,4 @@ class _EditTaskState extends State<EditTask> {
       ),
     );
   }
-
-  void _openDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(6.0),
-          title: Text(title),
-          content: content,
-          actions: [
-            FlatButton(
-              child: Text(
-                'CANCEL',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              onPressed: Navigator.of(context).pop,
-            ),
-            FlatButton(
-              child: Text(
-                'SUBMIT',
-                style: TextStyle(color: Colors.green),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _openMainColorPicker() async {
-    _openDialog(
-      "Main Color picker",
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        allowShades: false,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
-  }
-
-  ColorSwatch _tempMainColor;
-  dynamic _mainColor = Colors.blue;
 }
