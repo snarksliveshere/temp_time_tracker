@@ -12,21 +12,17 @@ class TaskItem extends StatelessWidget {
     @required this.task,
     @required this.deleteTx,
     @required this.editTx,
-    @required this.getGlobalKey,
   }) : super(key: key);
 
   final Task task;
   final Function deleteTx;
   final Function editTx;
-  final Function getGlobalKey;
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey containerKey = GlobalKey();
     const double bigSpace = ConfigMain.bigSpace;
     return task.flagDivider
         ? Container(
-            key: containerKey,
             width: double.infinity,
             margin: EdgeInsets.only(top: bigSpace, left: bigSpace, right: bigSpace),
             padding: EdgeInsets.only(bottom: ConfigMain.smallSpace),
@@ -54,7 +50,6 @@ class TaskItem extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
-              key: containerKey,
               padding: EdgeInsets.all(ConfigMain.smallSpace),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -3,6 +3,9 @@ class ConfigMain {
   // logic
   static const int numOfHours = 8;
 
+  // appearance
+  static const String noTaskImage = 'assets/images/towelie.png';
+
 
 
   // margin & padding

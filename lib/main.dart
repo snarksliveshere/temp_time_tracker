@@ -293,11 +293,11 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Show Chart',
+            Texts.showChart,
             style: Theme.of(context).textTheme.title,
           ),
           Switch.adaptive(
-            activeColor: Theme.of(context).accentColor,
+            activeColor: Theme.of(context).primaryColor,
             value: _showChart,
             onChanged: (val) {
               setState(() {
