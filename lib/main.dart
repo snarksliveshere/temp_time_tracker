@@ -4,7 +4,7 @@ import 'dart:math';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -16,6 +16,7 @@ import './widgets/edit_task.dart';
 import './widgets/task_list.dart';
 import './widgets/chart.dart';
 import './models/task.dart';
+import './models/storage.dart';
 
 void main() => runApp(MyApp());
 
@@ -92,12 +93,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       print(e.toString());
     }
-    print("this state");
-
-    print('below there');
-    if (objs != null) {
-      print(objs[1].title);
-    }
 
     widget.storage.readData().then((String value) {
       setState(() {
@@ -109,7 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
         state = value;
       });
     });
-//    _f = loadFile(context);
   }
 
   List<Task> get _recentTasks {
@@ -151,10 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       _userTasks.add(newTx);
       List jsonL = Task.encodeToJson(_userTasks);
-//      _userTasks = listTask;
       _writeData(jsonL.toString());
-//      state = '$jsonL';
-//      widget.storage.writeData('$jsonL');
     });
   }
 
@@ -171,7 +162,6 @@ class _MyHomePageState extends State<MyHomePage> {
       Task task = _userTasks.firstWhere((el) => el.id == id);
       List<Task> tasks =
           _userTasks.where((el) => el.date == task.date).toList();
-      print(tasks.length);
       if (tasks.length <= 2) {
         _userTasks.removeWhere((el) => el.date == task.date);
       } else {
@@ -209,11 +199,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _scrollToTask(DateTime date) {
-//    print(date.toString());
     String dateFormat = DateFormat.yMd().format(date);
     int index = _userTasks
         .indexWhere((el) => el.dateFormatDM == dateFormat && el.flagDivider);
-    print(index);
     // далее надо вытащить все данные листа до этого момента index
     if (index == -1) {
       return;
@@ -231,8 +219,6 @@ class _MyHomePageState extends State<MyHomePage> {
         newUserTaskList.where((el) => el.flagDivider).toList();
     List<Task> listOfTask =
         newUserTaskList.where((el) => !el.flagDivider).toList();
-    print(listOfDividers.length);
-    print(listOfTask.length);
     double sum = listOfDividers.length * 50.0 + listOfTask.length * 90.0;
 
     setState(() {
@@ -383,7 +369,6 @@ class _MyHomePageState extends State<MyHomePage> {
     var pageBody = SafeArea(
       child: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (isLandscape)
@@ -403,33 +388,5 @@ class _MyHomePageState extends State<MyHomePage> {
             appBar: appBar,
             body: pageBody,
           );
-  }
-}
-
-class Storage {
-  Future<String> get localPath async {
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
-  }
-
-  Future<File> get localFile async {
-    final path = await localPath;
-    return File('$path/file.txt');
-  }
-
-  Future<String> readData() async {
-    try {
-      final file = await localFile;
-      String body = await file.readAsString();
-
-      return body;
-    } catch (e) {
-      await writeData('');
-    }
-  }
-
-  Future<File> writeData(String data) async {
-    final file = await localFile;
-    return file.writeAsString('$data');
   }
 }
