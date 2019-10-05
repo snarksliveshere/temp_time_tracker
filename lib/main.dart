@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 //import 'package:flutter/services.dart'; // SystemChrome
-
+import './config/texts.dart';
 import './widgets/new_task.dart';
 import './widgets/edit_task.dart';
 import './widgets/task_list.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Temp Time Tracker',
+      title: Texts.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,

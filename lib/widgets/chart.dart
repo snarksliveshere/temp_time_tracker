@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../config/config_main.dart';
 import './chart_bar.dart';
 import '../models/task.dart';
 
 class Chart extends StatelessWidget {
   final List<Task> recentTasks;
   final Function scrollTo;
+  MediaQueryData _mediaQuery;
 
   Chart(this.recentTasks, this.scrollTo);
 
@@ -44,13 +46,15 @@ class Chart extends StatelessWidget {
     return res;
   }
 
+
   @override
   Widget build(BuildContext context) {
+    _mediaQuery = MediaQuery.of(context);
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(ConfigMain.smallPadding),
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(ConfigMain.smallPadding),
         child:  _getRowContainerChart(),
       ),
     );
@@ -81,13 +85,14 @@ class Chart extends StatelessWidget {
   }
 
   List<Widget> _getContainerChart() {
+    double width = _mediaQuery.size.width - (ConfigMain.smallPadding * 4);
     return groupedTaskValues.map((data) {
       return GestureDetector(
         onTap: () {
           this.scrollTo(data['now']);
         },
         child: Container(
-          width: 40.0,
+          width: width / 7,
           child: ChartBar(
               data['dateDM'],
               data['dayOfWeek'],
