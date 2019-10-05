@@ -5,15 +5,17 @@ class Texts {
   static const String showChart = 'Show Chart';
 
   // bittons
-  static const String buttonCancel = 'Cancel';
-  static const String buttonDelete = 'Delete';
-  static const String buttonSubmit = 'Submit';
+  static const String buttonCancel = 'CANCEL';
+  static const String buttonDelete = 'DELETE';
+  static const String buttonSubmit = 'SUBMIT';
 
 
   static const String noDateChosen = 'No Date Chosen';
   static const String chooseDate = 'Choose Date';
   static const String chooseColor = 'Choose Color';
+  static const String pickedDate = 'Picked Date';
   static const String addTask = 'Add Task';
+  static const String editTask = 'Edit Task';
 
 
   static const String newTaskTitle = 'Title';

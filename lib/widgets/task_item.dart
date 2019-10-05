@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../config/config_main.dart';
 import '../config/texts.dart';
 import '../models/task.dart';
+import './adaptive_flat_button.dart';
 
 class TaskItem extends StatelessWidget {
   const TaskItem({
@@ -150,28 +151,13 @@ class TaskItem extends StatelessWidget {
           title: Text("Delete Task"),
           content: Text("Are you sure you want to delete\n`${task.title}`?"),
           actions: <Widget>[
-            FlatButton(
-              child: new Text(
-                "CANCEL",
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                this.task.title = 'new';
-              },
-            ),
-            FlatButton(
-              child: new Text(
-                "DELETE",
-                style: TextStyle(
-                  color: Theme.of(context).errorColor,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                this.deleteTx(task.id);
-              },
-            ),
+            AdaptiveFlatButton.cancel(() {
+              Navigator.of(context).pop();
+            }),
+            AdaptiveFlatButton.delete(() {
+              Navigator.of(context).pop();
+              this.deleteTx(task.id);
+            }),
           ],
         );
       },

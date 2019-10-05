@@ -19,7 +19,6 @@ class EditTask extends StatefulWidget {
   EditTask(this.id, this.title, this.description, this.amount, this.date,
       this.color, this.editTx);
 
-
   @override
   _EditTaskState createState() => _EditTaskState();
 }
@@ -30,7 +29,6 @@ class _EditTaskState extends State<EditTask> {
   final _descriptionController = TextEditingController();
   String _id;
   DateTime _selectedDate;
-
 
   @override
   void initState() {
@@ -168,12 +166,9 @@ class _EditTaskState extends State<EditTask> {
               if (isLandscape) getLandscapeMode(),
               if (!isLandscape) ...getPortraitMode(),
               TextField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(labelText: Texts.newTaskDescription),
                 controller: _descriptionController,
                 onSubmitted: (_) => _submitData(),
-                // onChanged: (val) {
-                //   titleInput = val;
-                // },
               ),
               Container(
                 height: 70.0,
@@ -181,23 +176,22 @@ class _EditTaskState extends State<EditTask> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Flexible(
-                      flex: 3,
-                      child:
-                        AdaptiveFlatButton(
+                        flex: 3,
+                        child: AdaptiveFlatButton(
                           text: Texts.chooseDate,
                           handler: _presentDatePicker,
-                        )
-                    ),
+                        )),
                     Flexible(
                       flex: 3,
                       child: _selectedDate == null
                           ? Text(
-                        Texts.noDateChosen,
+                              Texts.noDateChosen,
                               style: TextStyle(
                                   color: Theme.of(context).errorColor),
                             )
                           : Text(
-                              'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
+                              Texts.pickedDate +
+                                  ' ${DateFormat.yMd().format(_selectedDate)}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -222,7 +216,7 @@ class _EditTaskState extends State<EditTask> {
               ),
               RaisedButton(
                 color: Theme.of(context).primaryColorDark,
-                child: Text('Edit Task'),
+                child: const Text(Texts.editTask),
                 textColor: Theme.of(context).textTheme.button.color,
                 onPressed: _checkValid(),
               ),
