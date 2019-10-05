@@ -166,7 +166,7 @@ class _EditTaskState extends State<EditTask> {
               if (isLandscape) getLandscapeMode(),
               if (!isLandscape) ...getPortraitMode(),
               TextField(
-                decoration: InputDecoration(labelText: Texts.newTaskDescription),
+                decoration: InputDecoration(labelText: Texts.taskDescription),
                 controller: _descriptionController,
                 onSubmitted: (_) => _submitData(),
               ),

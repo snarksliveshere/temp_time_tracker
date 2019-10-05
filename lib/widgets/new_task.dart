@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../config/config_main.dart';
 import '../config/texts.dart';
 import './adaptive_flat_button.dart';
 import './date_picker.dart';
 import './color_picker.dart';
+import 'task_form.dart';
 
 class NewTask extends StatefulWidget {
   final Function addTx;
@@ -63,67 +63,10 @@ class _NewTaskState extends State<NewTask> {
     });
   }
 
-  Widget getLandscapeMode() {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          flex: 10,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Title',
-              errorText: _titleController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _titleController,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) {
-            //   titleInput = val;
-            // },
-          ),
-        ),
-        VerticalDivider(),
-        Flexible(
-          flex: 2,
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              errorText: _amountController.text.isEmpty ? 'required' : null,
-            ),
-            controller: _amountController,
-            keyboardType: TextInputType.number,
-            onSubmitted: (_) => _submitData(),
-            // onChanged: (val) => amountInput = val,
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> getPortraitMode() {
-    return [
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Title',
-          errorText: _titleController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _titleController,
-        onSubmitted: (_) => _submitData(),
-        // onChanged: (val) {
-        //   titleInput = val;
-        // },
-      ),
-      TextField(
-        decoration: InputDecoration(
-          labelText: 'Amount (hours)',
-          errorText: _amountController.text.isEmpty ? 'required' : null,
-        ),
-        controller: _amountController,
-        keyboardType: TextInputType.number,
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
     ColorPicker colorPicker = ColorPicker(
       cancelFx: () => Navigator.of(context).pop(),
       context: context,
@@ -135,8 +78,15 @@ class _NewTaskState extends State<NewTask> {
         Navigator.of(context).pop();
       },
     );
-    final mediaQuery = MediaQuery.of(context);
-    final bool isLandscape = mediaQuery.orientation == Orientation.landscape;
+
+    TaskForm taskForm = TaskForm(
+      titleController: _titleController,
+      amountController: _amountController,
+      descriptionController: _descriptionController,
+      submitFx: _submitData,
+      isLandscape: isLandscape,
+    );
+
     return SingleChildScrollView(
       child: Card(
         elevation: 5,
@@ -150,16 +100,7 @@ class _NewTaskState extends State<NewTask> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              if (isLandscape) getLandscapeMode(),
-              if (!isLandscape) ...getPortraitMode(),
-              TextField(
-                decoration: InputDecoration(labelText: 'Description'),
-                controller: _descriptionController,
-                onSubmitted: (_) => _submitData(),
-                // onChanged: (val) {
-                //   titleInput = val;
-                // },
-              ),
+              ...taskForm.getForm,
               Container(
                 height: 70.0,
                 child: Row(
