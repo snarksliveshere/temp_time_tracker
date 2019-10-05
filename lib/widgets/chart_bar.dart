@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../config/config_main.dart';
+
 class ChartBar extends StatelessWidget {
   final String date;
   final String label;
@@ -33,24 +35,24 @@ class ChartBar extends StatelessWidget {
           ),
           Container(
             height: constraint.maxHeight * 0.5,
-            width: 10,
+            width: ConfigMain.middleSpace,
             child: Stack(
               children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    color: Color.fromRGBO(220, 220, 220, 1),
-                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: ConfigMain.appGrey, width: ConfigMain.thinBorder),
+                    color: ConfigMain.appLightGrey,
+                    borderRadius: BorderRadius.circular(ConfigMain.middleRadius),
                   ),
                 ),
                 FractionallySizedBox(
                   heightFactor: spendingPctOfTotal,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: this.spendingAmount > 8
-                          ? Colors.green
+                      color: this.spendingAmount > ConfigMain.numOfHours
+                          ? ConfigMain.appGreen
                           : Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(ConfigMain.middleRadius),
                     ),
                   ),
                 ),
