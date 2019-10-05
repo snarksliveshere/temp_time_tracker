@@ -114,7 +114,7 @@ class _NewTaskState extends State<NewTask> {
       ),
       TextField(
         decoration: InputDecoration(
-          labelText: 'Amount',
+          labelText: 'Amount (hours)',
           errorText: _amountController.text.isEmpty ? 'required' : null,
         ),
         controller: _amountController,
