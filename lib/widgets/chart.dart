@@ -50,12 +50,15 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _mediaQuery = MediaQuery.of(context);
+    final double width = _mediaQuery.size.width - (ConfigMain.middleSpace * 4);
+    final double itemWidth = width / 7;
+
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(ConfigMain.middleSpace),
       child: Padding(
         padding: EdgeInsets.all(ConfigMain.middleSpace),
-        child:  _getRowContainerChart(),
+        child:  _getRowContainerChart(itemWidth),
       ),
     );
   }
@@ -69,30 +72,29 @@ class Chart extends StatelessWidget {
     );
   }
 
-  Widget _getRowContainerChart() {
+  Widget _getRowContainerChart(double itemWidth) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: ScrollController(
-        initialScrollOffset: 1055.0
+        initialScrollOffset: itemWidth * (ConfigMain.numOfDays - 7)
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          ..._getContainerChart()
+          ..._getContainerChart(itemWidth)
         ],
       ),
     );
   }
 
-  List<Widget> _getContainerChart() {
-    double width = _mediaQuery.size.width - (ConfigMain.middleSpace * 4);
+  List<Widget> _getContainerChart(double itemWidth) {
     return groupedTaskValues.map((data) {
       return GestureDetector(
         onTap: () {
           this.scrollTo(data['now']);
         },
         child: Container(
-          width: width / 7,
+          width: itemWidth,
           child: ChartBar(
               data['dateDM'],
               data['dayOfWeek'],
