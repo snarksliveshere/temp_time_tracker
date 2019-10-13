@@ -45,99 +45,101 @@ class TaskItem extends StatelessWidget {
               ),
             ),
           )
-        : Card(
-            elevation: 5.0,
-            margin: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 5,
-            ),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(ConfigMain.smallSpace),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Flexible(
-                    flex: 3,
-                    child: CircleAvatar(
-                      backgroundColor: task.color,
-                      radius: 30.0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(ConfigMain.smallSpace),
-                        child: FittedBox(
-                          child: Text(
-                            '${task.amount.toStringAsFixed(2)} H',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+        : Container(
+            height: ConfigMain.taskItemHeight,
+            child: Card(
+              elevation: 5.0,
+              margin: const EdgeInsets.symmetric(
+                vertical: ConfigMain.smallSpace,
+                horizontal: ConfigMain.smallSpace,
+              ),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(ConfigMain.smallSpace),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 3,
+                      child: CircleAvatar(
+                        backgroundColor: task.color,
+                        radius: ConfigMain.taskItemAvatar,
+                        child: Padding(
+                          padding: const EdgeInsets.all(ConfigMain.smallSpace),
+                          child: FittedBox(
+                            child: Text(
+                              '${task.amount.toStringAsFixed(2)} H',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 8,
-                    fit: FlexFit.tight,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          task.title,
-                          style: Theme.of(context).textTheme.title,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Flexible(
-                              flex: 7,
-                              child: Text(
-                                task.description,
-                                style: Theme.of(context).textTheme.subhead,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (task.description != '')
+                    Flexible(
+                      flex: 8,
+                      fit: FlexFit.tight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            task.title,
+                            style: Theme.of(context).textTheme.title,
+                          ),
+                          Row(
+                            children: <Widget>[
                               Flexible(
-                                flex: 3,
-                                child: Tooltip(
-                                  message: task.description,
-                                  child: Text(
-                                    Texts.descriptionMore,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 14.0),
-                                  ),
+                                flex: 7,
+                                child: Text(
+                                  task.description,
+                                  style: Theme.of(context).textTheme.subhead,
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                          ],
-                        ),
-                        Text(
-                          DateFormat.yMMMd().format(task.date),
-                          style: TextStyle(
-                            fontSize: 10.0,
+                              if (task.description != '')
+                                Flexible(
+                                  flex: 3,
+                                  child: Tooltip(
+                                    message: task.description,
+                                    child: Text(
+                                      Texts.descriptionMore,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Text(
+                            DateFormat.yMMMd().format(task.date),
+                            style: TextStyle(
+                              fontSize: 10.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: IconButton(
-                      icon: const Icon(Icons.edit),
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () => this.editTx(task.id),
+                    Flexible(
+                      flex: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        color: Theme.of(context).primaryColor,
+                        onPressed: () => this.editTx(task.id),
+                      ),
                     ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: IconButton(
-                      icon: const Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-//                      onPressed: () => this.deleteTx(task.id),
-                      onPressed: () => _showDeleteDialog(context),
+                    Flexible(
+                      flex: 2,
+                      child: IconButton(
+                        icon: const Icon(Icons.delete),
+                        color: Theme.of(context).errorColor,
+                        onPressed: () => _showDeleteDialog(context),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

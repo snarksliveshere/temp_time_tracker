@@ -10,8 +10,9 @@ class TaskList extends StatelessWidget {
   final Function deleteTx;
   final Function editTx;
   final ScrollController scrollController;
+  final double height;
 
-  TaskList(this.tasks, this.deleteTx, this.editTx, this.scrollController);
+  TaskList(this.tasks, this.deleteTx, this.editTx, this.scrollController, this.height);
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +45,7 @@ class TaskList extends StatelessWidget {
               },
               itemCount: tasks.length,
               controller: this.scrollController,
+              padding: EdgeInsets.only(bottom: this.height),
             ),
     );
   }

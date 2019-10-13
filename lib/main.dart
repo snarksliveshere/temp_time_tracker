@@ -37,21 +37,17 @@ class MyApp extends StatelessWidget {
           accentColor: ConfigMain.appAccentColor,
           errorColor: ConfigMain.appErrorColor,
           textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-                button: TextStyle(
-                  color: Colors.white,
-                ),
-                subhead: TextStyle(
-                  fontSize: 14,
-                ),
-                subtitle: TextStyle(
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w300
-                )
+              title: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
+              subhead: TextStyle(
+                fontSize: 14,
+              ),
+              subtitle: TextStyle(fontSize: 10.0, fontWeight: FontWeight.w300)),
           appBarTheme: AppBarTheme(
             textTheme: ThemeData.light().textTheme.copyWith(
                   title: TextStyle(
@@ -186,14 +182,13 @@ class _MyHomePageState extends State<MyHomePage> {
       isScrollControlled: true,
       builder: (_) {
         return EditTask(
-          id: task.id,
+            id: task.id,
             title: task.title,
             description: task.description,
             amount: task.amount,
             date: task.date,
             color: task.color,
-            editTx: _saveTask
-        );
+            editTx: _saveTask);
       },
     );
   }
@@ -219,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
         newUserTaskList.where((el) => el.flagDivider).toList();
     List<Task> listOfTask =
         newUserTaskList.where((el) => !el.flagDivider).toList();
-    double sum = listOfDividers.length * 50.0 + listOfTask.length * 90.0;
+    double sum = listOfDividers.length * ConfigMain.taskDividerHeight + listOfTask.length * ConfigMain.taskItemHeight;
 
     setState(() {
       _scrollController.animateTo(sum,
@@ -355,16 +350,25 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 width: ConfigMain.middleSpace,
               ),
-
             ],
           );
 
+    final double taskListHeight = (mediaQuery.size.height -
+            appBar.preferredSize.height -
+            mediaQuery.padding.top) *
+        0.7;
+
     final Widget txListWidget = Container(
-        height: (mediaQuery.size.height -
-                appBar.preferredSize.height -
-                mediaQuery.padding.top) *
-            0.7,
-        child: TaskList(_userTasks, _deleteTask, _editTask, _scrollController));
+      height: taskListHeight,
+      child: TaskList(
+          _userTasks,
+          _deleteTask,
+          _editTask,
+          _scrollController,
+          (taskListHeight -
+              ConfigMain.taskItemHeight -
+              (ConfigMain.middleSpace * 2))),
+    );
 
     var pageBody = SafeArea(
       child: SingleChildScrollView(

@@ -19,6 +19,8 @@ class ConfigMain {
   // new & edit task
   static const double taskUnderForm = 70.0;
   static const double taskVerticalDivider = 20.0;
+  static const double taskItemHeight = 80.0;
+  static const double taskDividerHeight = 50.0;
 
 
   // border
@@ -38,4 +40,5 @@ class ConfigMain {
 
   // radius
   static const double middleRadius = 10.0;
+  static const double taskItemAvatar = 30.0;
 }
