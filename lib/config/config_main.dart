@@ -5,7 +5,7 @@ class ConfigMain {
   static const int numOfDays = 30;
 
   // appearance
-  static const String noTaskImage = 'assets/images/towelie.png';
+  static const String noTaskImage = 'assets/images/towelie.jpg';
 
 
 

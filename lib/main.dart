@@ -385,10 +385,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
+            backgroundColor: Colors.white,
             child: pageBody,
             navigationBar: appBar,
           )
         : Scaffold(
+            backgroundColor: Colors.white,
             appBar: appBar,
             body: pageBody,
           );
