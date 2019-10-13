@@ -16,6 +16,7 @@ class TaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(scrollController.toString());
     return Container(
       child: tasks.isEmpty
           ? LayoutBuilder(

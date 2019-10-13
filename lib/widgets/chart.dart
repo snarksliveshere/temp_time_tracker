@@ -93,6 +93,11 @@ class Chart extends StatelessWidget {
         onTap: () {
           this.scrollTo(data['now']);
         },
+        onDoubleTap: () {
+          this.scrollTo(data['now']);
+        },
+        onVerticalDragDown: (el) => this.scrollTo(data['now']),
+        onVerticalDragStart: (el) => this.scrollTo(data['now']),
         child: Container(
           width: itemWidth,
           child: ChartBar(

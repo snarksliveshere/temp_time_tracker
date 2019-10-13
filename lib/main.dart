@@ -205,8 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (newUserTaskList.length == 0) {
       setState(() {
-        _scrollController.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+        this.setScrollController();
       });
       return;
     }
@@ -214,12 +213,20 @@ class _MyHomePageState extends State<MyHomePage> {
         newUserTaskList.where((el) => el.flagDivider).toList();
     List<Task> listOfTask =
         newUserTaskList.where((el) => !el.flagDivider).toList();
-    double sum = listOfDividers.length * ConfigMain.taskDividerHeight + listOfTask.length * ConfigMain.taskItemHeight;
+    double sum = listOfDividers.length * ConfigMain.taskDividerHeight +
+        listOfTask.length * ConfigMain.taskItemHeight;
 
     setState(() {
       _scrollController.animateTo(sum,
           duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     });
+  }
+
+  Future<void> setScrollController() async {
+    if (_scrollController.hasClients) {
+      await _scrollController.animateTo(0,
+          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+    }
   }
 
   void _saveTask(String id, String txTitle, String txDescription,
@@ -296,8 +303,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       appBar.preferredSize.height -
                       mediaQuery.padding.top) *
                   0.7,
-              child: Chart(_recentTasks, _scrollToTask))
-          : txListWidget
+              child: Chart(_recentTasks, _scrollToTask),
+            )
+          : Container(
+              height: 0,
+              child: Chart(_recentTasks, _scrollToTask),
+            ),
+      _showChart
+          ? Container(
+              child: txListWidget,
+              height: 0,
+            )
+          : Container(
+              child: txListWidget,
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+            )
     ];
   }
 
